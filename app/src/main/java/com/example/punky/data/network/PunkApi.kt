@@ -11,16 +11,15 @@ class PunkApi ( val client: HttpClient ): IPunkApi {
 
     private val apiUrl = "https://api.punkapi.com/v2/beers"
 
-    override suspend fun getBeers(page: Int, perPage: Int) {
-        val request = client.request<List<PunkBeer>> {
+    override suspend fun getBeers(page: Int, perPage: Int) : List<PunkBeer> {
+        val result = client.request<List<PunkBeer>> {
             method = HttpMethod.Get
             url( apiUrl )
             parameter("page", page)
             parameter("per_page", perPage)
         }
 
-        //var beers = Json.decodeFromString<List<PunkBeer>>(request)
-        logd( request.toString())
+        return result
     }
 
 

@@ -16,18 +16,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        lifecycleScope.launchWhenResumed {
-            val client = HttpClient(CIO) {
-                install(JsonFeature){
-                    val json = kotlinx.serialization.json.Json {
-                        ignoreUnknownKeys = true
-                    }
-                    serializer = KotlinxSerializer( json )
-                }
-            }
-            val api = PunkApi( client )
 
-            api.getBeers(1, 20)
-        }
     }
 }
