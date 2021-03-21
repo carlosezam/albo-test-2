@@ -1,10 +1,20 @@
 package com.example.punky.data.local.daos
 
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.punky.data.local.entities.Beer
 
 @Dao
 abstract class BeerDao {
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertAll(beers: List<Beer>)
+
+    @Query("SELECT * FROM beers")
+    abstract fun pagingSource(): PagingSource<Int, Beer>
+
+    @Query("DELETE FROM beers")
+    abstract suspend fun deleteAll()
 
     @Query("SELECT * FROM beers")
     abstract suspend fun getAll() : List<Beer>

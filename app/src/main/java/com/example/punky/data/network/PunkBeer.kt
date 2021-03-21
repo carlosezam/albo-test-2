@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PunkBeer(
+        val id: Int,
         val name: String,
         val image_url: String?,
         val tagline: String,
