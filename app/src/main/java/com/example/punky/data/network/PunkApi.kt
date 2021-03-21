@@ -6,8 +6,9 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
-class PunkApi ( val client: HttpClient ): IPunkApi {
+class PunkApi @Inject constructor(val client: HttpClient ): IPunkApi {
 
     private val apiUrl = "https://api.punkapi.com/v2/beers"
 

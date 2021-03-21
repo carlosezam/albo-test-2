@@ -8,8 +8,9 @@ import androidx.paging.map
 import com.example.punky.data.PunkApiRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class BeerListViewModel constructor(
+class BeerListViewModel @Inject constructor(
     private val repository: PunkApiRepository
 ): ViewModel() {
 

@@ -7,8 +7,9 @@ import com.example.punky.data.network.PunkApi
 import com.example.punky.data.network.PunkApiSource
 import com.example.punky.data.network.PunkBeer
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class PunkApiRepository(
+class PunkApiRepository @Inject constructor(
     private val service: PunkApi
 ) {
     fun getStream() : Flow<PagingData<PunkBeer>> {

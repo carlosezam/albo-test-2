@@ -1,5 +1,6 @@
 package com.example.punky.ui.beerlist
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.punky.PunkyApplication
 import com.example.punky.R
 import com.example.punky.data.PunkApiRepository
 import com.example.punky.data.PunkyListViewModel
@@ -25,6 +28,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 
 /**
@@ -40,21 +44,16 @@ class BeerListFragment : Fragment() {
 
     lateinit var vmFactory : PunkyListViewModelFactory
 
-    private val vm: BeerListViewModel by viewModels { vmFactory }
+    @Inject lateinit var viewmodelFactory: ViewModelProvider.Factory
+    private val vm: BeerListViewModel by viewModels { viewmodelFactory }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        (context.applicationContext as PunkyApplication).appComponent.inject( this )
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val client = HttpClient(CIO) {
-            install(JsonFeature){
-                val json = kotlinx.serialization.json.Json {
-                    ignoreUnknownKeys = true
-                }
-                serializer = KotlinxSerializer( json )
-            }
-        }
-        val api = PunkApi( client )
-
-        vmFactory = PunkyListViewModelFactory( PunkApiRepository(api) )
     }
 
     override fun onCreateView(
