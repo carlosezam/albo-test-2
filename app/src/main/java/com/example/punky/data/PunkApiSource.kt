@@ -15,29 +15,7 @@ import kotlinx.coroutines.flow.map
 const val PUNK_API_STARTING_PAGE_INDEX = 1
 const val PUNK_API_ITEMS_PER_PAGE = 10
 
-class PunkyListViewModelFactory(
-    private val repository: PunkApiRepository
-    ) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return BeerListViewModel( repository ) as T
-    }
 
-}
-
-class PunkyListViewModel(private val repository: PunkApiRepository) : ViewModel(){
-
-    //private var currentResult: Flow<PagingData<PunkBeer>>? = null
-
-
-
-    /*fun search(): Flow<PagingData<BeerItem>> {
-        val result = repository.getStream().map { paginData ->
-            paginData.map { BeerItem(it.name, it.description, it.image_url) }
-        }.cachedIn(viewModelScope)
-        currentResult = result
-        return result
-    }*/
-}
 
 
 

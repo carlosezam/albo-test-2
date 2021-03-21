@@ -1,6 +1,7 @@
 package com.example.punky.di
 
 import android.app.Application
+import com.example.punky.ui.beerdeatils.BeerDetailsFragment
 import com.example.punky.ui.beerlist.BeerListFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -24,4 +25,5 @@ interface ApplicationGraph {
 
 
     fun inject(into: BeerListFragment)
+    fun inject(into: BeerDetailsFragment)
 }

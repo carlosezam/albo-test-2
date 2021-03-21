@@ -1,23 +1,14 @@
 package com.example.punky.ui.beerlist
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.map
-import com.example.punky.data.PunkApiRepository
+import com.example.punky.utils.Event
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class BeerListViewModel @Inject constructor(
-    private val repository: PunkApiRepository
-): ViewModel() {
+open abstract class BeerListViewModel : ViewModel() {
+    abstract val beers : Flow<PagingData<BeerItem>>
+    abstract val command: LiveData<Event<BeerListCommand>>
 
-    @ExperimentalPagingApi
-    val beers : Flow<PagingData<BeerItem>> = repository.getStream().map { pagingData ->
-        pagingData.map { BeerItem(it.name, it.description, it.imageUrl) }
-    }.cachedIn( viewModelScope )
-
+    abstract fun clickOnBeerItem( item: BeerItem)
 }

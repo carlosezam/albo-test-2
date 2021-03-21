@@ -15,16 +15,22 @@ import com.example.punky.R
 import com.example.punky.utils.LoadingDrawable
 
 data class BeerItem (
+    var id: Int,
     val title:String,
     val description: String,
     val imageUrl: String?
     )
 
-class BeerViewHolder(val binding: BeerViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
+class BeerViewHolder(private val binding: BeerViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBinding( data: BeerItem ){
+    fun onBinding( data: BeerItem, callback: (BeerViewHolderBinding) -> Unit ){
         binding.titleText.text = data.title
         binding.descriptionText.text = data.description
+        binding.mediaImage.transitionName = "image_${data.id}"
+
+        itemView.setOnClickListener {
+            callback( binding )
+        }
 
         if( ! data.imageUrl.isNullOrBlank()){
 
@@ -45,11 +51,11 @@ class BeerViewHolder(val binding: BeerViewHolderBinding) : RecyclerView.ViewHold
 }
 
 class BeerDiffCallback : DiffUtil.ItemCallback<BeerItem>() {
-    override fun areItemsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem.title == newItem.title
+    override fun areItemsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem.id == newItem.id
     override fun areContentsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem == newItem
 }
 
-class BeerAdapter : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
+class BeerAdapter(private val callback: (BeerViewHolderBinding, BeerItem, Int) -> Unit) : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -58,8 +64,10 @@ class BeerAdapter : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallb
     }
 
     override fun onBindViewHolder(holder: BeerViewHolder, position: Int) {
-        getItem(position)?.let {
-            holder.onBinding( it )
+        getItem(position)?.let { data ->
+            holder.onBinding( data ){
+                callback.invoke( it, data, position)
+            }
         }
     }
 
