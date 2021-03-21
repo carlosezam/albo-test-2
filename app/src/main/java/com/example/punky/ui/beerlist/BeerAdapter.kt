@@ -3,6 +3,7 @@ package com.example.punky.ui.beerlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -43,11 +44,11 @@ class BeerViewHolder(val binding: BeerViewHolderBinding) : RecyclerView.ViewHold
 }
 
 class BeerDiffCallback : DiffUtil.ItemCallback<BeerItem>() {
-    override fun areItemsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem === newItem
+    override fun areItemsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem.title == newItem.title
     override fun areContentsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem == newItem
 }
 
-class BeerAdapter : ListAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
+class BeerAdapter : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeerViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -56,7 +57,9 @@ class BeerAdapter : ListAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() 
     }
 
     override fun onBindViewHolder(holder: BeerViewHolder, position: Int) {
-       holder.onBinding( getItem(position) )
+        getItem(position)?.let {
+            holder.onBinding( it )
+        }
     }
 
 }
