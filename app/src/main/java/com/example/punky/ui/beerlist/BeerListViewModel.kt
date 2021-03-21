@@ -2,6 +2,7 @@ package com.example.punky.ui.beerlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
@@ -14,8 +15,9 @@ class BeerListViewModel @Inject constructor(
     private val repository: PunkApiRepository
 ): ViewModel() {
 
+    @ExperimentalPagingApi
     val beers : Flow<PagingData<BeerItem>> = repository.getStream().map { pagingData ->
-        pagingData.map { BeerItem(it.name, it.description, it.image_url) }
+        pagingData.map { BeerItem(it.name, it.description, it.imageUrl) }
     }.cachedIn( viewModelScope )
 
 }

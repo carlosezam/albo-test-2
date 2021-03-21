@@ -19,6 +19,7 @@ data class BeerItem (
     val description: String,
     val imageUrl: String?
     )
+
 class BeerViewHolder(val binding: BeerViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
 
     fun onBinding( data: BeerItem ){
