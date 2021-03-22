@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -69,7 +70,7 @@ class BeerListFragment : Fragment() {
     @ExperimentalPagingApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setupToolbar()
         setupListAdapter()
 
         vmodel.command.observe( viewLifecycleOwner, EventObserver{
@@ -80,6 +81,17 @@ class BeerListFragment : Fragment() {
 
     }
 
+    private fun setupToolbar(){
+        binding.toolbar.inflateMenu(R.menu.main_menu)
+        binding.toolbar.setOnMenuItemClickListener {
+            if( AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES ){
+                AppCompatDelegate.setDefaultNightMode( AppCompatDelegate.MODE_NIGHT_NO)
+            } else {
+                AppCompatDelegate.setDefaultNightMode( AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            true
+        }
+    }
     //var sharedImage: View? = null
     private fun setupListAdapter(){
         adapter = BeerAdapter { binding, item, position ->
@@ -88,7 +100,10 @@ class BeerListFragment : Fragment() {
         }
 
         postponeEnterTransition()
-        binding.beerList.adapter = adapter
+        binding.beerList.adapter = adapter?.withLoadStateHeaderAndFooter(
+            header = BeerLoadStateAdapter { adapter?.retry() },
+            footer = BeerLoadStateAdapter { adapter?.retry() }
+        )
         binding.beerList.viewTreeObserver.addOnPreDrawListener {
             startPostponedEnterTransition()
             true

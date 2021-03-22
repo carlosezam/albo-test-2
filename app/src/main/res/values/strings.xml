@@ -6,4 +6,6 @@
     <string name="label_description">Description</string>
     <string name="label_first_brewed_date">First Brewed Date</string>
     <string name="label_name">Name</string>
+    <string name="label_toggle_darkmode">Toggle DarkMode</string>
+    <string name="label_retry">retry</string>
 </resources>

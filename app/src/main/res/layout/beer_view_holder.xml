@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/colorSurface"
     >
 
     <androidx.constraintlayout.widget.Guideline
@@ -22,7 +23,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-        android:textColor="#DE000000"
+        android:textColor="?attr/primaryContrast"
 
         android:gravity="center_vertical"
         android:maxLines="2"
@@ -43,7 +44,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        android:textColor="#8A000000"
+        android:textColor="?attr/secondaryContrast"
         android:maxLines="3"
         android:ellipsize="end"
         app:layout_constraintTop_toBottomOf="@+id/title_text"
