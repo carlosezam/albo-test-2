@@ -17,19 +17,19 @@ import com.example.punky.utils.LoadingDrawable
 data class BeerItem (
     var id: Int,
     val title:String,
-    val description: String,
+    val tagline: String,
     val imageUrl: String?
     )
 
-class BeerViewHolder(private val binding: BeerViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
+class BeerViewHolder( val binding: BeerViewHolderBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    fun onBinding( data: BeerItem, callback: (BeerViewHolderBinding) -> Unit ){
+    fun onBinding( data: BeerItem, callback: (View) -> Unit ){
         binding.titleText.text = data.title
-        binding.descriptionText.text = data.description
+        binding.descriptionText.text = data.tagline
         binding.mediaImage.transitionName = "image_${data.id}"
 
         itemView.setOnClickListener {
-            callback( binding )
+            callback( itemView )
         }
 
         if( ! data.imageUrl.isNullOrBlank()){
@@ -55,7 +55,7 @@ class BeerDiffCallback : DiffUtil.ItemCallback<BeerItem>() {
     override fun areContentsTheSame(oldItem: BeerItem, newItem: BeerItem): Boolean = oldItem == newItem
 }
 
-class BeerAdapter(private val callback: (BeerViewHolderBinding, BeerItem, Int) -> Unit) : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
+class BeerAdapter(private val callback: (View, BeerItem, Int) -> Unit) : PagingDataAdapter< BeerItem, BeerViewHolder >( BeerDiffCallback() ){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BeerViewHolder {
         val inflater = LayoutInflater.from(parent.context)

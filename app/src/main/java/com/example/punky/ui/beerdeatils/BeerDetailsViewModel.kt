@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 
 open abstract class BeerDetailsViewModel : ViewModel() {
-    abstract val beerImage: LiveData<String?>
+
+    abstract val beerDetails: LiveData<UiBeerDetails?>
 
     abstract fun loadBeer(beerId: Int)
 }

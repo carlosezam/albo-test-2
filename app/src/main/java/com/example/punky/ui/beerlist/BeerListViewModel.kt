@@ -10,5 +10,5 @@ open abstract class BeerListViewModel : ViewModel() {
     abstract val beers : Flow<PagingData<BeerItem>>
     abstract val command: LiveData<Event<BeerListCommand>>
 
-    abstract fun clickOnBeerItem( item: BeerItem)
+    abstract fun clickOnBeerItem( item: BeerItem, position: Int)
 }

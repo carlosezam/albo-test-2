@@ -22,10 +22,10 @@ class BeerListViewModelImpl @Inject constructor(
 
     @ExperimentalPagingApi
     override val beers : Flow<PagingData<BeerItem>> = repository.getStream().map { pagingData ->
-        pagingData.map { BeerItem(it.id, it.name, it.description, it.imageUrl) }
+        pagingData.map { BeerItem(it.id, it.name, it.tagline, it.imageUrl) }
     }.cachedIn( viewModelScope )
 
-    override fun clickOnBeerItem(item: BeerItem) {
-        command.value = Event( BeerListCommand.OpenBeerDetails( item.id ) )
+    override fun clickOnBeerItem(item: BeerItem, position: Int) {
+        command.value = Event( BeerListCommand.OpenBeerDetails( item, position ) )
     }
 }

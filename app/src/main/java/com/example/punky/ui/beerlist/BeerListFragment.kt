@@ -11,6 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.findNavController
 import androidx.paging.ExperimentalPagingApi
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.punky.PunkyApplication
 import com.example.punky.R
+import com.example.punky.databinding.BeerViewHolderBinding
 
 import com.example.punky.databinding.FragmentBeerListBinding
 import com.example.punky.ui.beerdeatils.BeerDetailsFragment
@@ -72,18 +74,17 @@ class BeerListFragment : Fragment() {
 
         vmodel.command.observe( viewLifecycleOwner, EventObserver{
             when( it ){
-                is BeerListCommand.OpenBeerDetails -> showBeerDetails( it.beerId, sharedImage )
+                is BeerListCommand.OpenBeerDetails -> showBeerDetails( it.beer, it.position )
             }
         })
 
     }
 
-    var sharedImage: View? = null
+    //var sharedImage: View? = null
     private fun setupListAdapter(){
         adapter = BeerAdapter { binding, item, position ->
-            //showBeerDetails( item.id, binding.mediaImage )
-            sharedImage = binding.mediaImage
-            vmodel.clickOnBeerItem( item )
+
+            vmodel.clickOnBeerItem( item, position )
         }
 
         postponeEnterTransition()
@@ -100,22 +101,28 @@ class BeerListFragment : Fragment() {
         }
     }
 
-    private fun showBeerDetails(id: Int, sharedImage: View?){
+    private fun showBeerDetails(beer: BeerItem, position: Int){
+
+        val viewHolder = binding.beerList.findViewHolderForAdapterPosition(position) as? BeerViewHolder
+        val sharedImage = viewHolder?.binding?.mediaImage
 
         var bundle = bundleOf(
-            BeerDetailsFragment.ARG_BEER_ID to id,
-            BeerDetailsFragment.ARG_IMAGE_TRANSITION_NAME to sharedImage?.transitionName
+            BeerDetailsFragment.ARG_BEER_ID to beer.id,
+            BeerDetailsFragment.ARG_IMAGE_URL to beer.imageUrl
         )
 
+        var extras: Navigator.Extras? = null
 
-        val extras = sharedImage?.let{
-            FragmentNavigator.Extras.Builder()
-                .addSharedElement(sharedImage, sharedImage.transitionName)
-                .build()
+        if( sharedImage != null ){
+            bundle.putString( BeerDetailsFragment.ARG_IMAGE_TRANSITION_NAME, sharedImage.transitionName)
+
+            extras = FragmentNavigator.Extras.Builder()
+                        .addSharedElement(sharedImage, sharedImage.transitionName)
+                        .build()
         }
 
-            findNavController().navigate(R.id.to_details, bundle, null, extras)
-       }
+        findNavController().navigate(R.id.to_details, bundle, null, extras)
+    }
 
 
     override fun onDestroyView() {
