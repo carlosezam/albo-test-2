@@ -17,4 +17,20 @@ steps:
     gradleOptions: '-Xmx3072m'
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'assembleDebug'
+    tasks: 'assembleRelease'
+
+- task: DownloadSecureFile@1
+  name: keystore
+  displayName: 'APK Certificate'
+  inputs:
+    secureFile: keystore.jks
+    
+- task: AndroidSigning@2
+  inputs:
+    apkFiles: '**/*.apk'
+    jarsign: true
+    jarsignerKeystoreFile: '$(keystore.secureFilePath)'
+    jarsignerKeystorePassword: '0B3c0d8A!'
+    jarsignerKeystoreAlias: 'punky'
+    jarsignerKeyPassword: '50341889'
+    zipalign: true
