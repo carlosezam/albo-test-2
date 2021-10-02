@@ -19,18 +19,13 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'assembleRelease'
 
-- task: DownloadSecureFile@1
-  name: keystore
-  displayName: 'APK Certificate'
-  inputs:
-    secureFile: keystore.jks
     
 - task: AndroidSigning@2
   inputs:
     apkFiles: '**/*.apk'
     jarsign: true
-    jarsignerKeystoreFile: '$(keystore.secureFilePath)'
-    jarsignerKeystorePassword: '0B3c0d8A!'
+    jarsignerKeystoreFile: 'keystore.jks'
+    jarsignerKeystorePassword: '$(keystore.pass)'
     jarsignerKeystoreAlias: 'punky'
-    jarsignerKeyPassword: '50341889'
+    jarsignerKeyPassword: '$(key.pass)'
     zipalign: true
