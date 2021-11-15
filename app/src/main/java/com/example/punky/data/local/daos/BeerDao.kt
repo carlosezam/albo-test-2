@@ -14,7 +14,7 @@ abstract class BeerDao {
     abstract fun pagingSource(): PagingSource<Int, Beer>
 
     @Query("DELETE FROM beers")
-    abstract suspend fun deleteAll()
+    abstract suspend fun deleteAll(): Unit
 
     @Query("SELECT * FROM beers")
     abstract suspend fun getAll() : List<Beer>
