@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 const val PUNK_API_STARTING_PAGE_INDEX = 1
-const val PUNK_API_ITEMS_PER_PAGE = 10
+const val PUNK_API_ITEMS_PER_PAGE = 20
 
 
 

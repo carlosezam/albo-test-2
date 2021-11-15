@@ -16,14 +16,14 @@ class PunkApiRepository @Inject constructor(
     private val service: PunkApi,
     private val database: PunkyDatabase
 ) {
-    fun _getStream() : Flow<PagingData<PunkBeer>> {
+    fun _getStream(itemsPerPage: Int = PUNK_API_ITEMS_PER_PAGE) : Flow<PagingData<PunkBeer>> {
         val pagingConfig = PagingConfig(
-            pageSize = PUNK_API_ITEMS_PER_PAGE,
+            pageSize = itemsPerPage,
             enablePlaceholders = false
         )
         return Pager(
             config = pagingConfig,
-            pagingSourceFactory = { PunkApiSource(service) }
+            pagingSourceFactory = { PunkApiSource(service,1, itemsPerPage) }
         ).flow
     }
 

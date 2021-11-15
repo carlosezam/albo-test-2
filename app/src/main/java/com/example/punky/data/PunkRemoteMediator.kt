@@ -9,6 +9,9 @@ import com.example.punky.data.local.PunkyDatabase
 import com.example.punky.data.local.entities.Beer
 import com.example.punky.data.local.entities.RemoteBeerKeys
 import com.example.punky.data.network.PunkApi
+import com.example.punky.utils.logd
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.InvalidObjectException
 import javax.inject.Inject
 
@@ -17,22 +20,30 @@ class PunkRemoteMediator @Inject constructor(
     private val database: PunkyDatabase,
     private val service: PunkApi
 ): RemoteMediator<Int, Beer>() {
+
+    override suspend fun initialize(): InitializeAction {
+        return super.initialize()
+    }
     override suspend fun load(loadType: LoadType, state: PagingState<Int, Beer>): MediatorResult {
+
+
         return try {
             val page = when(loadType) {
                 LoadType.REFRESH -> {
                     val remoteKeys = getRemoteKeysClosestToCurrentPosition(state)
-                    remoteKeys?.nextKey?.minus(1) ?: PUNK_API_STARTING_PAGE_INDEX
+                    val key = remoteKeys?.nextKey?.minus(1) ?: PUNK_API_STARTING_PAGE_INDEX
+                    logd( "LoadType: ${loadType.name}, key = $key" )
+                    key
                 }
                 LoadType.PREPEND -> {
-                    val remoteKeys = getRemoteKeysForFirstItem(state)
-                        ?: throw InvalidObjectException("Remote keys should not be null")
-                    remoteKeys.prevKey
-                        ?: return MediatorResult.Success(endOfPaginationReached = true)
+                    return MediatorResult.Success(endOfPaginationReached = true)
                 }
                 LoadType.APPEND -> {
-                    val remoteKeys = getRemoteKeysForLastItem(state)
-                    remoteKeys?.nextKey ?: throw InvalidObjectException("Remote key should not be null for $loadType")
+                    //val remoteKeys = getRemoteKeysForLastItem(state)
+                    //val key = remoteKeys?.nextKey
+                    val key = database.remoteBeerKeysDao().getLast()
+                    logd( "LoadType: ${loadType.name}, key = $key" )
+                    key.nextKey ?: return MediatorResult.Success( true )
                 }
             }
 

@@ -17,4 +17,7 @@ interface RemoteBeerKeysDao {
 
     @Query("DELETE FROM remote_beer_keys")
     suspend fun deleteAll()
+
+    @Query("SELECT * FROM REMOTE_BEER_KEYS ORDER BY beerId DESC LIMIT 1")
+    suspend fun getLast(): RemoteBeerKeys
 }
