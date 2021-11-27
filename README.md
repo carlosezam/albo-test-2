@@ -1,4 +1,4 @@
-## albo-test-2
+## Punky 
 
 Este proyecto se trata de un Master-Detail, en la vista inicial se muestra un listado de cevezas con detalles minimos
 como nombre, imagen y tagline. Al dar clic sobre un item se puede observar los detalles. Cuenta con soporte offline y modo nocturno.
