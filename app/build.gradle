@@ -6,6 +6,24 @@ plugins {
 }
 
 android {
+
+    // load local.properties
+    Properties properties =new Properties()
+    if( rootProject.file("local.properties").exists() ) {
+        properties.load( rootProject.file("local.properties").newDataInputStream() )
+    }
+
+    signingConfigs {
+        release {
+            if( getPropOrEnv("STORE_FILE", properties) ) {
+                storeFile file( getPropOrEnv("STORE_FILE", properties) )
+            }
+            storePassword getPropOrEnv("STORE_PASSWORD", properties)
+            keyAlias getPropOrEnv("KEY_ALIAS", properties)
+            keyPassword getPropOrEnv("KEY_PASSWORD", properties)
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -31,6 +49,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -115,4 +134,8 @@ dependencies {
 
     implementation 'com.google.dagger:dagger:2.28.3'
     kapt 'com.google.dagger:dagger-compiler:2.28.3'
+}
+
+static def getPropOrEnv(String entry, Properties properties = null){
+    return properties?.getProperty(entry, "") ?: System.getenv( entry )
 }
