@@ -7,14 +7,16 @@ import com.example.punky.data.PUNK_API_STARTING_PAGE_INDEX
 import io.ktor.utils.io.errors.*
 
 class PunkApiSource(
-    private val service: PunkApi
+    private val service: IPunkApi,
+    private val startingPageIndex: Int = PUNK_API_STARTING_PAGE_INDEX,
+    private val itemsPerPage: Int = PUNK_API_ITEMS_PER_PAGE
 ) : PagingSource<Int, PunkBeer>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PunkBeer> {
-        val page = params.key ?: PUNK_API_STARTING_PAGE_INDEX
+        val page = params.key ?: startingPageIndex
         return try {
             val beers = service.getBeers( page, params.loadSize)
 
-            val nextKey = if( beers.isEmpty() ) null else page + ( params.loadSize / PUNK_API_ITEMS_PER_PAGE )
+            val nextKey = if( beers.isEmpty() ) null else page + ( params.loadSize / itemsPerPage )
             val prevKey = if( page == PUNK_API_STARTING_PAGE_INDEX) null else page -1
 
             LoadResult.Page( beers, prevKey, nextKey )
