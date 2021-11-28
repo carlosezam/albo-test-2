@@ -28,17 +28,17 @@ jobs:
 
     - name: Decode Keystore
       env:
-        KEYSTORE: ${{ secrets.KEYSTORE }}
-      run: echo $KEYSTORE | base64 -di > release.keystore
+        STORE_FILE: ${{ secrets.STORE_FILE }}
+      run: echo $STORE_FILE | base64 -di > keystore
 
       
     - name: Build with Gradle
       run: ./gradlew app:assembleRelease
       env:
-        STORE_FILE: ../release.keystore
-        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWD }}
-        KEY_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-        KEY_PASSWORD: ${{ secrets.KEYENTRY_PASSWD }}
+        STORE_FILE: ../keystore
+        STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     - name: Upload
       uses: actions/upload-artifact@v2
