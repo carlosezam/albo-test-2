@@ -49,20 +49,22 @@ class PunkApiSourceTest {
 
     @Test
     fun initialLoad_shouldGetFirstElemnts(): Unit = runBlocking {
-        val punkApiSource = PunkApiSource( punkApi )
-        whenever( punkApi.getBeers(any(), any()) ).thenReturn( emptyList() )
+        val mockApi: IPunkApi = mock()
+        val punkApiSource = PunkApiSource( mockApi )
+        whenever( mockApi.getBeers(any(), any()) ).thenReturn( emptyList() )
 
         //val expected = PagingSource.LoadResult.Page( data = listOf<PunkBeer>(), null, null )
-        punkApiSource.load( PagingSource.LoadParams.Refresh( key = null, loadSize = 3, placeholdersEnabled = false) )
+        val actual = punkApiSource.load( PagingSource.LoadParams.Refresh( key = null, loadSize = 3, placeholdersEnabled = false) )
 
         // debe intentar descargar de la pagina inicial, 3 elemntos
-        verify( punkApi ).getBeers( 1, 3)
+        verify( mockApi ).getBeers( 1, 3)
     }
 
     @Test
     fun onEmpyList_ShouldReturnNullKeys(): Unit = runBlocking {
-        val punkApiSource = PunkApiSource( punkApi )
-        whenever( punkApi.getBeers(any(), any()) ).thenReturn( emptyList() )
+        val mockApi: IPunkApi = mock()
+        val punkApiSource = PunkApiSource( mockApi )
+        whenever( mockApi.getBeers(any(), any()) ).thenReturn( emptyList() )
 
 
         val actual =punkApiSource.load( PagingSource.LoadParams.Refresh( key = null, loadSize = 3, placeholdersEnabled = false) )
@@ -76,7 +78,9 @@ class PunkApiSourceTest {
     fun whenLoad_nextKey_shouldBeNext(): Unit = runBlocking {
         val punkApiSource = PunkApiSource( punkApi, 1, 2 )
 
-        val page = punkApiSource.load( PagingSource.LoadParams.Refresh( key = null, loadSize = 3, placeholdersEnabled = false) ) as PagingSource.LoadResult.Page<String, PunkBeer>
+        val params : PagingSource.LoadParams<Int> = PagingSource.LoadParams.Refresh( key = null, loadSize = 3, placeholdersEnabled = false)
+        val page = punkApiSource.load( params ) as PagingSource.LoadResult.Page<Int, PunkBeer>
+
 
         Assert.assertEquals( 2, page.nextKey)
 
