@@ -1,3 +1,6 @@
+[![Android CI](https://github.com/carlosezam/punky-android/actions/workflows/android.yml/badge.svg)](https://github.com/carlosezam/punky-android/actions/workflows/android.yml)
+![Custom badge](https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplayshields.herokuapp.com%2Fplay%3Fi%3Dcom.carlosezam.punky%26l%3DAndroid%26m%3D%24version-Alpha)
+
 ## Punky 
 
 Este proyecto se trata de un Master-Detail, en la vista inicial se muestra un listado de cevezas con detalles minimos
