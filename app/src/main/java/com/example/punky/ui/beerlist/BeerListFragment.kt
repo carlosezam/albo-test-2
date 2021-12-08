@@ -42,6 +42,7 @@ import javax.inject.Inject
  * Use the [BeerListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@ExperimentalPagingApi
 class BeerListFragment : Fragment() {
 
 
@@ -67,7 +68,8 @@ class BeerListFragment : Fragment() {
 
     var adapter : BeerAdapter? = null
 
-    @ExperimentalPagingApi
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
@@ -93,8 +95,9 @@ class BeerListFragment : Fragment() {
         }
     }
     //var sharedImage: View? = null
+    @ExperimentalPagingApi
     private fun setupListAdapter(){
-        adapter = BeerAdapter { binding, item, position ->
+        adapter = BeerAdapter { _, item, position ->
 
             vmodel.clickOnBeerItem( item, position )
         }

@@ -1,6 +1,7 @@
 package com.example.punky.di
 
 import android.app.Application
+import androidx.paging.ExperimentalPagingApi
 import com.example.punky.ui.beerdeatils.BeerDetailsFragment
 import com.example.punky.ui.beerlist.BeerListFragment
 import dagger.BindsInstance
@@ -24,6 +25,7 @@ interface ApplicationGraph {
     }
 
 
+    @ExperimentalPagingApi
     fun inject(into: BeerListFragment)
     fun inject(into: BeerDetailsFragment)
 }

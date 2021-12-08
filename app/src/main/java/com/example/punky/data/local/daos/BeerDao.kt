@@ -14,7 +14,7 @@ abstract class BeerDao {
     abstract fun pagingSource(): PagingSource<Int, Beer>
 
     @Query("DELETE FROM beers")
-    abstract suspend fun deleteAll(): Unit
+    abstract suspend fun deleteAll(): Int
 
     @Query("SELECT * FROM beers")
     abstract suspend fun getAll() : List<Beer>
@@ -29,7 +29,7 @@ abstract class BeerDao {
     abstract suspend fun update(beer: Beer)
 
     @Delete
-    abstract suspend fun delete(beer: Beer)
+    abstract suspend fun delete(beer: Beer): Int
 
     @Transaction
     open suspend fun upsert(beer: Beer){
