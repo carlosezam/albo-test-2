@@ -59,8 +59,8 @@ class BeerDetailsFragment : Fragment() {
         imageTransitionName = arguments?.getString(ARG_IMAGE_TRANSITION_NAME)
         imageUrl =arguments?.getString(ARG_IMAGE_URL)
 
-        sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
-        sharedElementReturnTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+        sharedElementEnterTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
+        sharedElementReturnTransition = TransitionInflater.from(requireContext()).inflateTransition(android.R.transition.move)
 
         imageUrl?.let{
             //postponeEnterTransition()

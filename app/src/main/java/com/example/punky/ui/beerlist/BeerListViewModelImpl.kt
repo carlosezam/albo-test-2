@@ -20,7 +20,8 @@ class BeerListViewModelImpl @Inject constructor(
 
     override val command = MutableLiveData<Event<BeerListCommand>>()
 
-    @ExperimentalPagingApi
+
+    @OptIn(ExperimentalPagingApi::class)
     override val beers : Flow<PagingData<BeerItem>> = repository.getStream().map { pagingData ->
         pagingData.map { BeerItem(it.id, it.name, it.tagline, it.imageUrl) }
     }.cachedIn( viewModelScope )

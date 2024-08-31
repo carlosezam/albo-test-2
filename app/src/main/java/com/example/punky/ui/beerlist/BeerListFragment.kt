@@ -67,7 +67,7 @@ class BeerListFragment : Fragment() {
 
     var adapter : BeerAdapter? = null
 
-    @ExperimentalPagingApi
+    @OptIn(ExperimentalPagingApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
