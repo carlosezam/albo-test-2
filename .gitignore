@@ -1,4 +1,5 @@
 keystore
+punky.json
 *~
 
 *.iml
@@ -10,9 +11,21 @@ keystore
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+/.idea/compiler.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
+
+ # IntelliJ
+.idea/
+misc.xml
+deploymentTargetDropDown.xml
+render.experimental.xml
+
+# Ignorar archivos específicos dentro de .idea
+.idea/compiler.xml
+.idea/gradle.xml
+.idea/misc.xml
