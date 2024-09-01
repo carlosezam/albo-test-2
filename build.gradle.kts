@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
-    val kotlin_version by extra("1.9.0")
+    val kotlin_version by extra("2.0.20")
     val ktor_version by extra("1.5.2")
     val nav_version by extra("2.7.7")
     val room_version by extra("2.6.1")
@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id ("com.google.devtools.ksp") version "1.9.0-1.0.12" apply false
+    id ("com.google.devtools.ksp") version "2.0.20-1.0.24" apply false
 }
 
 allprojects {

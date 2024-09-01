@@ -6,7 +6,6 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlinx-serialization")
-    id("kotlin-kapt")
     id("com.google.devtools.ksp")
     id("com.github.triplet.play")
 }
