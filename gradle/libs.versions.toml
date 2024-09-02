@@ -6,6 +6,7 @@ nav = "2.7.7"  # Asegúrate de reemplazar esto con la versión adecuada
 playPublisher = "3.11.0"
 room = "2.6.1"  # Asegúrate de reemplazar esto con la versión adecuada
 paging = "3.3.0"  # Asegúrate de reemplazar esto con la versión adecuada
+espressoCore = "3.6.1"
 
 # Plugins
 agp = "8.2.2"
@@ -17,6 +18,7 @@ jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 google-ksp = { id = "com.google.devtools.ksp", version = "2.0.20-1.0.24" }
 play-publisher = { id = "com.github.triplet.play", version = "3.11.0" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 
 
 [libraries]
@@ -61,3 +63,4 @@ paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.re
 
 dagger = { module = "com.google.dagger:dagger", version = "2.48" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version = "2.48" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
