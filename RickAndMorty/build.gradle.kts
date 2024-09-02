@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -53,5 +54,18 @@ dependencies {
     implementation(libs.androidx.material3)
     debugImplementation(libs.ui.tooling)
 
+
+    // kotlinx serialization
+    implementation(libs.serialization.json)
+
+    // ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.negotiation)
+    implementation(libs.ktor.client.serialization.json)
+    //implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.ktor.client.mock)
+    debugImplementation(libs.slf4j)
 
 }
