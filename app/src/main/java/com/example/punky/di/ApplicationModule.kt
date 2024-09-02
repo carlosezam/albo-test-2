@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import io.ktor.client.*
 import io.ktor.client.engine.okhttp.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
-import okhttp3.OkHttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 import okhttp3.logging.HttpLoggingInterceptor
 
 @Module
@@ -15,11 +15,11 @@ class ApplicationModule {
     @Provides
     fun providesKtorHttpClient(): HttpClient {
         return HttpClient(OkHttp) {
-            install(JsonFeature){
-                val json = kotlinx.serialization.json.Json {
+            install(ContentNegotiation){
+                val jsonConfig = Json {
                     ignoreUnknownKeys = true
                 }
-                serializer = KotlinxSerializer(json)
+                json(jsonConfig)
             }
             engine {
                 val loggingInterceptor = HttpLoggingInterceptor()

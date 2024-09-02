@@ -27,8 +27,6 @@ import com.example.punky.ui.beerdeatils.BeerDetailsFragment
 import com.example.punky.utils.EventObserver
 import io.ktor.client.*
 //import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.features.json.serializer.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest

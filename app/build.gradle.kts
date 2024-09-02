@@ -121,7 +121,9 @@ dependencies {
     // ktor
     //implementation("io.ktor:ktor-client-android:$ktor_version")
     //implementation("io.ktor:ktor-client-cio:$ktor_version")
-    implementation(libs.ktor.client.serialization.jvm)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.serialization.json)
+    implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.okhttp.logging.interceptor)
 
