@@ -1,17 +1,16 @@
 [versions]
 kotlin = "2.0.20"  # Asegúrate de reemplazar esto con la versión adecuada
-coroutines = "1.7.1"  # Asegúrate de reemplazar esto con la versión adecuada
+coroutines = "1.8.1"  # Asegúrate de reemplazar esto con la versión adecuada
 ktor = "2.3.12"  # Asegúrate de reemplazar esto con la versión adecuada
 nav = "2.7.7"  # Asegúrate de reemplazar esto con la versión adecuada
 playPublisher = "3.11.0"
 room = "2.6.1"  # Asegúrate de reemplazar esto con la versión adecuada
 paging = "3.3.0"  # Asegúrate de reemplazar esto con la versión adecuada
 espressoCore = "3.6.1"
-composeBom = "2024.04.01"
+composeBom = "2024.08.00"
 
 # Plugins
 agp = "8.2.2"
-uiTooling = "1.6.8"
 
 
 [plugins]
@@ -31,9 +30,12 @@ androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+#tsting compose
+androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test" }
+androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
@@ -43,16 +45,21 @@ material = { module = "com.google.android.material:material", version = "1.12.0"
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
 legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
 
+#testing
 kotlin-faker = { module = "io.github.serpro69:kotlin-faker", version = "1.6.0" }
 junit = { module = "junit:junit", version = "4.13.2" }
-androidx-junit = { module = "androidx.test.ext:junit", version = "1.2.1" }
+androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version = "1.2.1" }
+roboelectric = { module = "org.robolectric:robolectric", version = "4.13" }
+mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "4.1.0" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+mockk = { module = "io.mockk:mockk", version = "1.13.12" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
+# coroutines
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "4.1.0" }
-
-# ktor-client-serialization-jvm = { module = "io.ktor:ktor-client-serialization-jvm", version.ref = "ktor" }
+# ktor
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
@@ -67,6 +74,7 @@ slf4j = { module = "org.slf4j:slf4j-simple", version = "2.0.7" }
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
 
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.8.4" }
+lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.8.4" }
 
 navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "nav" }
 navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "nav" }
@@ -74,6 +82,7 @@ navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.
 glide = { module = "com.github.bumptech.glide:glide", version = "4.12.0" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version = "4.12.0" }
 
+# Room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
@@ -84,5 +93,3 @@ paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.re
 
 dagger = { module = "com.google.dagger:dagger", version = "2.48" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version = "2.48" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }

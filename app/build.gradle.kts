@@ -107,7 +107,7 @@ dependencies {
     // testing
     implementation(libs.kotlin.faker)
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.junit.ktx)
 
     implementation(libs.coroutines.android)
     testImplementation(libs.coroutines.test)
