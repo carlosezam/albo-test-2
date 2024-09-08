@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -101,4 +104,6 @@ dependencies {
     implementation(libs.ktor.client.mock)
     debugImplementation(libs.slf4j)
 
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }

@@ -7,6 +7,7 @@ import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.domain.IdGenerator
+import javax.inject.Inject
 
 
 sealed interface LoadCharactersResult {
@@ -15,7 +16,7 @@ sealed interface LoadCharactersResult {
     data class Data(val characters: List<Character>, val next: Int): LoadCharactersResult
 }
 
-class CharactersRepositoryImpl (
+class CharactersRepositoryImpl @Inject constructor(
     private val api: RickandmortyApi,
     private val idGenerator: IdGenerator,
 ) : CharacterRepository {

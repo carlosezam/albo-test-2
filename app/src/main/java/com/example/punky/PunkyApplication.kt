@@ -1,10 +1,8 @@
 package com.example.punky
 
 import android.app.Application
-import com.example.punky.di.ApplicationGraph
-import com.example.punky.di.DaggerApplicationGraph
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class PunkyApplication : Application() {
-
-    val appComponent = DaggerApplicationGraph.factory().create(this)
 }

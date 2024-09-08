@@ -20,6 +20,7 @@ import com.example.punky.PunkyApplication
 import com.example.punky.R
 import com.example.punky.databinding.FragmentBeerDetailsBinding
 import com.example.punky.utils.LoadingDrawable
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -33,6 +34,7 @@ import kotlin.properties.Delegates
  * Use the [BeerDetailsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class BeerDetailsFragment : Fragment() {
 
     var beerId = 0
@@ -42,15 +44,11 @@ class BeerDetailsFragment : Fragment() {
     private var _binding: FragmentBeerDetailsBinding? = null
     private val binding: FragmentBeerDetailsBinding get() = _binding!!
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val vmodel: BeerDetailsViewModel by viewModels { viewModelFactory }
+    private val vmodel: BeerDetailsViewModel by viewModels()
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        (context.applicationContext as PunkyApplication).appComponent.inject(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

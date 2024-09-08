@@ -16,19 +16,20 @@ import com.ezam.rickandmorty.RandomIdGenerator
 import com.ezam.rickandmorty.data.remote.RickandmortyApiRest
 import com.ezam.rickandmorty.data.CharactersRepositoryImpl
 import com.ezam.rickandmorty.domain.Character
+import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.ui.CharacterItem
+import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.engine.okhttp.OkHttp
 import kotlinx.coroutines.launch
 import okhttp3.logging.HttpLoggingInterceptor
+import javax.inject.Inject
 import kotlin.random.Random
 import kotlin.random.nextInt
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    val repository = CharactersRepositoryImpl(
-        api = RickandmortyApiRest(OkHttp.create()),
-        idGenerator = RandomIdGenerator(1..826)
-    )
+    @Inject lateinit var repository: CharacterRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -7,6 +7,7 @@ import dagger.BindsInstance
 import dagger.Component
 import javax.inject.Singleton
 
+/*
 @Singleton
 @Component( modules = [
     ApplicationModule::class,
@@ -26,4 +27,4 @@ interface ApplicationGraph {
 
     fun inject(into: BeerListFragment)
     fun inject(into: BeerDetailsFragment)
-}
+}*/

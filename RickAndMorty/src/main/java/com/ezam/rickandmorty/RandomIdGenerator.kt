@@ -4,7 +4,7 @@ import com.ezam.rickandmorty.domain.IdGenerator
 import kotlin.random.Random
 import kotlin.random.nextInt
 
-class RandomIdGenerator(
+class RandomIdGenerator  constructor(
     private val range: IntRange
 ) : IdGenerator
 {

@@ -6,9 +6,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    id("kotlinx-serialization")
-    id("com.google.devtools.ksp")
-    id("com.github.triplet.play")
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.google.ksp)
+    alias(libs.plugins.kapt)
+    alias(libs.plugins.play.publisher)
+    alias(libs.plugins.hilt.android)
 }
 
 play {
@@ -54,14 +56,8 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf(
-                        "room.schemaLocation" to "$projectDir/schemas".toString(),
-                        "room.incremental" to "true",
-                        "room.expandProjection" to "true"
-                )
-            }
+        ksp{
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
         }
     }
 
@@ -155,8 +151,8 @@ dependencies {
 
     implementation(libs.paging.runtime.ktx)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 }
 
 fun getPropOrEnv(entry: String, properties: Properties? = null) : String? {

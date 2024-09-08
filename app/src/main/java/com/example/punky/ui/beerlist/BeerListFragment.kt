@@ -25,6 +25,7 @@ import com.example.punky.databinding.BeerViewHolderBinding
 import com.example.punky.databinding.FragmentBeerListBinding
 import com.example.punky.ui.beerdeatils.BeerDetailsFragment
 import com.example.punky.utils.EventObserver
+import dagger.hilt.android.AndroidEntryPoint
 import io.ktor.client.*
 //import io.ktor.client.engine.cio.*
 import kotlinx.coroutines.Job
@@ -40,6 +41,7 @@ import javax.inject.Inject
  * Use the [BeerListFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class BeerListFragment : Fragment() {
 
 
@@ -47,13 +49,11 @@ class BeerListFragment : Fragment() {
     private val binding: FragmentBeerListBinding  get() = _binding!!
 
 
-    @Inject lateinit var viewmodelFactory: ViewModelProvider.Factory
-    private val vmodel: BeerListViewModel by viewModels { viewmodelFactory }
+    private val vmodel: BeerListViewModel by viewModels()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        (context.applicationContext as PunkyApplication).appComponent.inject( this )
     }
 
 

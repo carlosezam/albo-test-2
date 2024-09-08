@@ -15,6 +15,7 @@ import io.ktor.serialization.ContentConvertException
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import java.io.IOException
+import javax.inject.Inject
 
 interface RickandmortyApi {
     suspend fun getCharacters( page: Int = 1 ): Result<CharacterListResult>
@@ -23,7 +24,7 @@ interface RickandmortyApi {
 
 
 
-class RickandmortyApiRest( engine: HttpClientEngine ) : RickandmortyApi {
+class RickandmortyApiRest @Inject constructor( engine: HttpClientEngine ) : RickandmortyApi {
 
     private val client = HttpClient(engine){
         install(ContentNegotiation){

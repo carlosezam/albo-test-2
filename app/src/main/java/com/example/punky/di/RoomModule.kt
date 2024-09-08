@@ -5,8 +5,11 @@ import com.example.punky.data.local.PunkyDatabase
 import com.example.punky.data.local.daos.BeerDao
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
 @Module
+@InstallIn(SingletonComponent::class)
 class RoomModule {
 
     @Provides
