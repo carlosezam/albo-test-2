@@ -24,6 +24,7 @@ play {
 }
 
 android {
+    namespace = "com.example.punky"
 
     val properties = Properties()
     val localPropertiesFile = rootProject.file("local.properties")
@@ -34,7 +35,7 @@ android {
     }
 
     signingConfigs {
-        create("config") {
+        create("GooglePlay") {
             if(!getPropOrEnv("STORE_FILE", properties).isNullOrBlank()) {
                 storeFile = file( getPropOrEnv("STORE_FILE", properties) ?: "")
                 storePassword = getPropOrEnv("STORE_PASSWORD", properties)
@@ -63,9 +64,12 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("config")
+            signingConfig = signingConfigs.getByName("GooglePlay")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+        debug {
+            applicationIdSuffix = ".debug"
         }
     }
     compileOptions {
@@ -89,7 +93,6 @@ android {
         pickFirst "win32-x86-64/attach_hotspot_windows.dll"
         pickFirst "win32-x86/attach_hotspot_windows.dll" */
     }
-    namespace = "com.example.punky"
 }
 
 dependencies {
