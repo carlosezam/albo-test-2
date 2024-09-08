@@ -7,6 +7,7 @@ import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.domain.IdGenerator
+import com.ezam.rickandmorty.domain.VitalStatus
 import javax.inject.Inject
 
 
@@ -48,5 +49,5 @@ class CharactersRepositoryImpl @Inject constructor(
     }
 }
 
-fun CharacterListResult.CharacterDTO.toCharacter() = Character(name = name, imageUrl = image)
-fun CharacterItemDTO.toCharacter() = Character(name = name, imageUrl = image)
+fun CharacterListResult.CharacterDTO.toCharacter() = Character(name = name, imageUrl = image, VitalStatus.fromString(status))
+fun CharacterItemDTO.toCharacter() = Character(name = name, imageUrl = image, VitalStatus.fromString(status))

@@ -3,6 +3,7 @@ package com.ezam.rickandmorty.ui
 import com.ezam.rickandmorty.data.LoadCharactersResult
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
+import com.ezam.rickandmorty.domain.VitalStatus
 import com.ezam.rickandmorty.utils.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -69,8 +70,8 @@ class CharacterListViewModelTest {
     @Test
     fun `characters muestra los datos devueltos por el repositorio`(){
 
-        val character1 = Character("1", "1")
-        val character2 = Character("2", "2")
+        val character1 = Character("1", "1", VitalStatus.Alive)
+        val character2 = Character("2", "2", VitalStatus.Alive)
         // given
         coEvery { repository.loadCharacters(any()) }returns
                 LoadCharactersResult.Data(characters = listOf(character1), next = 2) andThen

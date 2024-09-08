@@ -132,6 +132,7 @@ class RickandmortyApiTest{
         assertEquals(1, response.id)
         assertEquals("https://rickandmortyapi.com/api/character/avatar/1.jpeg", response.image)
         assertEquals("Rick Sanchez", response.name)
+        assertEquals("Alive", response.status)
     }
 }
 

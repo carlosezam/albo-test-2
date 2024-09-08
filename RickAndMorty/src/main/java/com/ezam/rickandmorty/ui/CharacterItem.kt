@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,11 +26,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.CompositingStrategy
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipPath
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.palette.graphics.Palette
@@ -40,6 +48,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import com.ezam.rickandmorty.R
 import com.ezam.rickandmorty.domain.Character
+import com.ezam.rickandmorty.domain.VitalStatus
 
 @Composable
 fun CharacterItem(character: Character, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
@@ -48,6 +57,12 @@ fun CharacterItem(character: Character, modifier: Modifier = Modifier, onClick: 
     var dominantColor by remember { mutableStateOf(Color.Gray) }
     var textColor by remember { mutableStateOf(Color.White) }
     var isLoading by remember { mutableStateOf(true) }
+    val statusColor = when(character.status) {
+        VitalStatus.Alive -> Color.Green
+        VitalStatus.Dead -> Color.Red
+        VitalStatus.Unknown -> Color.Gray
+    }
+
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
@@ -72,8 +87,17 @@ fun CharacterItem(character: Character, modifier: Modifier = Modifier, onClick: 
             Spacer(modifier = Modifier.height(this@BoxWithConstraints.maxWidth.div(4)))
             Text(
                 text = character.name,
-                modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp),
-                style = MaterialTheme.typography.headlineMedium,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.headlineLarge,
+                color = textColor,
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = character.status.name,
+                modifier = Modifier
+                    .padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.headlineLarge,
                 color = textColor,
             )
         }
@@ -108,22 +132,60 @@ fun CharacterItem(character: Character, modifier: Modifier = Modifier, onClick: 
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
-        } else {
-
-            bitmapImage?.let {
-                Image(
-                    bitmap = it.asImageBitmap(),
-                    contentDescription = "Imagen de ${character.name}",
-                    modifier = Modifier
-                        .size(maxWidth.div(2))
-                        .border(4.dp, dominantColor, CircleShape)
-                        .padding(1.dp)
-                        .clip(CircleShape)
-                        ,
-                    contentScale = ContentScale.FillWidth
-                )
-            }
         }
+
+
+        Image(
+            bitmap = bitmapImage?.asImageBitmap() ?: ImageBitmap.imageResource(id = R.drawable.rick),
+            contentDescription = "Imagen de ${character.name}",
+            modifier = Modifier
+                .size(maxWidth.div(2))
+                //.border(4.dp, dominantColor, CircleShape)
+                .padding(1.dp)
+                //.clip(CircleShape)
+                .graphicsLayer {
+                    compositingStrategy = CompositingStrategy.Offscreen
+                }
+                .drawWithCache {
+                    val path = Path()
+                    path.addOval(
+                        Rect(
+                            topLeft = Offset.Zero,
+                            bottomRight = Offset(size.width, size.height)
+                        )
+                    )
+                    onDrawWithContent {
+                        clipPath(path) {
+                            this@onDrawWithContent.drawContent()
+                            drawCircle(
+                                color = dominantColor,
+                                radius = size.width.div(2) + 2,
+                                alpha = 0.5f,
+                                style = Stroke(width = 10.dp.toPx())
+                            )
+                        }
+
+
+                        val dotSize = size.width / 8f
+                        drawCircle(
+                            Color.Black,
+                            radius = dotSize,
+                            center = Offset(size.width - dotSize, size.height - dotSize),
+                            blendMode = BlendMode.Clear
+                        )
+
+                        drawCircle(
+                            color = statusColor,
+                            radius = dotSize * 0.8f,
+                            center = Offset(size.width - dotSize, size.height - dotSize),
+                        )
+                    }
+                }
+                ,
+            contentScale = ContentScale.FillWidth
+        )
+
+
     }
 }
 
@@ -133,7 +195,8 @@ fun CharacterItemPreview() {
     CharacterItem(
         character = Character(
             "Rick",
-            "https://rickandmortyapi.com/api/character/avatar/3.jpeg"
+            "https://rickandmortyapi.com/api/character/avatar/3.jpeg",
+            status = VitalStatus.Alive
         )
     )
 }
