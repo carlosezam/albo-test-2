@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import coil.imageLoader
 import coil.request.ImageRequest
+import com.ezam.rickandmorty.data.byteArrayToBitmap
 import com.ezam.rickandmorty.domain.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,7 +35,7 @@ class CharacterItemViewModel @Inject constructor(
     fun nexRandom() = viewModelScope.launch {
         repository.randomCharacter()?.let { next ->
 
-            val image = downloadBitmap(next.imageUrl) ?: return@let
+            val image = byteArrayToBitmap(next.image) ?: return@let
 
             val palette = generatePalette(image)
 
@@ -50,6 +51,8 @@ class CharacterItemViewModel @Inject constructor(
             state.update { new }
         }
     }
+
+
 
     suspend fun downloadBitmap(imageUrl: String) : Bitmap? {
         val request = ImageRequest.Builder(context)

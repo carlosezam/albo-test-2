@@ -7,7 +7,9 @@ import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.domain.IdGenerator
+import com.ezam.rickandmorty.domain.ImageDownloader
 import com.ezam.rickandmorty.domain.VitalStatus
+import okhttp3.internal.EMPTY_BYTE_ARRAY
 import javax.inject.Inject
 
 
@@ -20,6 +22,7 @@ sealed interface LoadCharactersResult {
 class CharactersRepositoryImpl @Inject constructor(
     private val api: RickandmortyApi,
     private val idGenerator: IdGenerator,
+    private val imageDownloader: ImageDownloader,
 ) : CharacterRepository {
 
     override suspend fun loadCharacters(page: Int) : LoadCharactersResult {
@@ -27,7 +30,7 @@ class CharactersRepositoryImpl @Inject constructor(
         val result = api.getCharacters(page)
 
         result.onSuccess {
-            val characters = it.results.map{ it.toCharacter() }
+            val characters = it.results.map{ it.toCharacter(imageDownloader) }
             return LoadCharactersResult.Data(characters = characters, next = page + 1)
         }
 
@@ -41,13 +44,22 @@ class CharactersRepositoryImpl @Inject constructor(
     }
 
     override suspend fun loadCharacter(id: Int): Character? {
-        return api.getCharacter(id).getOrNull()?.toCharacter()
+        return api.getCharacter(id).getOrNull()?.toCharacter(imageDownloader)
     }
 
     override suspend fun randomCharacter(): Character? {
-        return api.getCharacter( idGenerator.nextId() ).getOrNull()?.toCharacter()
+        return api.getCharacter( idGenerator.nextId() ).getOrNull()?.toCharacter(imageDownloader)
     }
 }
 
-fun CharacterListResult.CharacterDTO.toCharacter() = Character(name = name, imageUrl = image, VitalStatus.fromString(status))
-fun CharacterItemDTO.toCharacter() = Character(name = name, imageUrl = image, VitalStatus.fromString(status))
+suspend fun CharacterListResult.CharacterDTO.toCharacter(imageDownloader: ImageDownloader) = Character(
+    name = name,
+    image = imageDownloader.downloadImageAsByteArray(image) ?: ByteArray(0),
+    status = VitalStatus.fromString(status)
+)
+
+suspend fun CharacterItemDTO.toCharacter(imageDownloader: ImageDownloader) = Character(
+    name = name,
+    image = imageDownloader.downloadImageAsByteArray(image) ?: ByteArray(0),
+    status = VitalStatus.fromString(status)
+)
