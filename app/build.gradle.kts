@@ -13,11 +13,11 @@ plugins {
 
 play {
     serviceAccountCredentials.set(file("../punky.json"))
-    track.set("beta")
-    userFraction.set(0.1)
-    defaultToAppBundles.set(true)
+    track.set("production")
+    //userFraction.set(0.1)
+    //defaultToAppBundles.set(true)
     resolutionStrategy.set(ResolutionStrategy.AUTO)
-    releaseStatus.set(ReleaseStatus.IN_PROGRESS)
+    releaseStatus.set(ReleaseStatus.COMPLETED)
 
 }
 
@@ -49,8 +49,8 @@ android {
         applicationId = "com.carlosezam.punky"
         minSdk = 21
         targetSdk = 34
-        versionCode = 21
-        versionName = "6.0"
+        versionCode = 22
+        versionName = "7.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
