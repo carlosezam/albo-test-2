@@ -116,6 +116,23 @@ class RickandmortyApiTest{
         assertNotNull( response )
         assertTrue( response !is NotFoundException ) //UnknownHostException
     }
+
+    @Test
+    fun `getCharacter retorna exitoso`(): Unit = runBlocking {
+        val mockEngine = MockEngine {
+            respond(
+                content = ByteReadChannel(character1),
+                status = HttpStatusCode.OK,
+                headers = headersOf(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+            )
+        }
+
+        val response = RickandmortyApiRest(mockEngine).getCharacter(1).getOrThrow()
+
+        assertEquals(1, response.id)
+        assertEquals("https://rickandmortyapi.com/api/character/avatar/1.jpeg", response.image)
+        assertEquals("Rick Sanchez", response.name)
+    }
 }
 
 val firstPageCharacters = """
@@ -208,5 +225,33 @@ val allChracters = """
                 "created": "2017-11-04T18:50:21.651Z"
             }
         ]
+    }
+""".trimIndent()
+
+
+val character1 = """
+    {
+        "id": 1,
+        "name": "Rick Sanchez",
+        "status": "Alive",
+        "species": "Human",
+        "type": "",
+        "gender": "Male",
+        "origin": {
+            "name": "Earth (C-137)",
+            "url": "https://rickandmortyapi.com/api/location/1"
+        },
+        "location": {
+            "name": "Citadel of Ricks",
+            "url": "https://rickandmortyapi.com/api/location/3"
+        },
+        "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        "episode": [
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2",
+            "https://rickandmortyapi.com/api/episode/3"
+        ],
+        "url": "https://rickandmortyapi.com/api/character/1",
+        "created": "2017-11-04T18:48:46.250Z"
     }
 """.trimIndent()

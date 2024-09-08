@@ -1,10 +1,12 @@
 package com.ezam.rickandmorty.data
 
 import android.content.res.Resources.NotFoundException
-import com.ezam.rickandmorty.data.remote.CharactersResult
+import com.ezam.rickandmorty.data.remote.CharacterItemDTO
+import com.ezam.rickandmorty.data.remote.CharacterListResult
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
+import com.ezam.rickandmorty.domain.IdGenerator
 
 
 sealed interface LoadCharactersResult {
@@ -13,7 +15,10 @@ sealed interface LoadCharactersResult {
     data class Data(val characters: List<Character>, val next: Int): LoadCharactersResult
 }
 
-class CharactersRepositoryImpl (private val api: RickandmortyApi) : CharacterRepository {
+class CharactersRepositoryImpl (
+    private val api: RickandmortyApi,
+    private val idGenerator: IdGenerator,
+) : CharacterRepository {
 
     override suspend fun loadCharacters(page: Int) : LoadCharactersResult {
 
@@ -33,6 +38,14 @@ class CharactersRepositoryImpl (private val api: RickandmortyApi) : CharacterRep
         return LoadCharactersResult.RetryAgain
     }
 
+    override suspend fun loadCharacter(id: Int): Character? {
+        return api.getCharacter(id).getOrNull()?.toCharacter()
+    }
+
+    override suspend fun randomCharacter(): Character? {
+        return api.getCharacter( idGenerator.nextId() ).getOrNull()?.toCharacter()
+    }
 }
 
-fun CharactersResult.CharacterDTO.toCharacter() = Character(name = name, imageUrl = image)
+fun CharacterListResult.CharacterDTO.toCharacter() = Character(name = name, imageUrl = image)
+fun CharacterItemDTO.toCharacter() = Character(name = name, imageUrl = image)

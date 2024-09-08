@@ -5,6 +5,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     id("kotlinx-serialization")
     id("com.google.devtools.ksp")
     id("com.github.triplet.play")
@@ -81,6 +82,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        compose = true
     }
     packaging {
         // for JNA and JNA-platform
@@ -103,6 +105,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.legacy.support.v4)
+    implementation(libs.androidx.activity.compose)
 
     // testing
     implementation(libs.kotlin.faker)

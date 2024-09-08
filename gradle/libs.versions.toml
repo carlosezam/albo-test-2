@@ -31,12 +31,15 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-compose-constraintlayout = { module =  "androidx.constraintlayout:constraintlayout-compose", version = "1.0.1"}
 
 #tsting compose
 androidx-compose-ui-test = { module = "androidx.compose.ui:ui-test" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 
+#compose utils
+coil-compose = { module = "io.coil-kt:coil-compose", version = "2.4.0"}
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
@@ -44,6 +47,7 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0
 material = { module = "com.google.android.material:material", version = "1.12.0" }
 constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version = "2.1.4" }
 legacy-support-v4 = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version = "1.9.2"}
 
 #testing
 kotlin-faker = { module = "io.github.serpro69:kotlin-faker", version = "1.6.0" }
@@ -93,3 +97,5 @@ paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.re
 
 dagger = { module = "com.google.dagger:dagger", version = "2.48" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version = "2.48" }
+
+androidx-palette = { module = "androidx.palette:palette", version = "1.0.0"}

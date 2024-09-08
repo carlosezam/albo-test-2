@@ -14,6 +14,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -51,6 +55,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.lifecycle.viewmodel.ktx)
 
+    implementation(libs.androidx.palette)
+
     //coroutines
     implementation(libs.coroutines.android)
     testImplementation(libs.coroutines.test)
@@ -69,6 +75,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.constraintlayout)
+    implementation(libs.androidx.activity.compose)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
@@ -76,6 +84,8 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test)
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
+    // compose utils
+    implementation(libs.coil.compose)
 
 
     // kotlinx serialization

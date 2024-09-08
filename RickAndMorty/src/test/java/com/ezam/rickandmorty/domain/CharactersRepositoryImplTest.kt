@@ -3,11 +3,14 @@ package com.ezam.rickandmorty.domain
 import android.content.res.Resources.NotFoundException
 import com.ezam.rickandmorty.data.CharactersRepositoryImpl
 import com.ezam.rickandmorty.data.LoadCharactersResult
-import com.ezam.rickandmorty.data.remote.CharactersResult
+import com.ezam.rickandmorty.data.remote.CharacterListResult
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import io.mockk.coEvery
+import io.mockk.coVerifyOrder
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
+import io.mockk.verifySequence
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import org.junit.Assert.*
@@ -26,18 +29,21 @@ class CharactersRepositoryImplTest {
     @MockK
     lateinit var api: RickandmortyApi
 
+    @MockK
+    lateinit var idGenerator: IdGenerator
+
     lateinit var repository: CharactersRepositoryImpl
 
     @Before
     fun setup(){
-        repository = CharactersRepositoryImpl(api)
+        repository = CharactersRepositoryImpl(api, idGenerator)
     }
 
     @Test
     fun `result existoso cuando api responde ok`() = runBlocking {
 
         // given
-        val charactersResult = json.decodeFromString<CharactersResult>(allCharacters)
+        val charactersResult = json.decodeFromString<CharacterListResult>(allCharacters)
 
         coEvery { api.getCharacters(any()) } returns Result.success(charactersResult)
 
@@ -75,8 +81,53 @@ class CharactersRepositoryImplTest {
         // then
         assertTrue( result is LoadCharactersResult.RetryAgain )
     }
+
+    @Test
+    fun `randomCharacter retorna un random`(): Unit = runBlocking {
+
+        coEvery { api.getCharacter(any()) } returns Result.failure(ConnectException())
+        every { idGenerator.nextId() } returns 5 andThen 10 andThen 0
+
+        // when
+        repeat(times = 3){ repository.randomCharacter() }
+
+        coVerifyOrder {
+            idGenerator.nextId()
+            api.getCharacter(5)
+            idGenerator.nextId()
+            api.getCharacter(10)
+            idGenerator.nextId()
+            api.getCharacter(0)
+        }
+    }
 }
 
+val character = """
+    {
+        "id": 1,
+        "name": "Rick Sanchez",
+        "status": "Alive",
+        "species": "Human",
+        "type": "",
+        "gender": "Male",
+        "origin": {
+            "name": "Earth (C-137)",
+            "url": "https://rickandmortyapi.com/api/location/1"
+        },
+        "location": {
+            "name": "Citadel of Ricks",
+            "url": "https://rickandmortyapi.com/api/location/3"
+        },
+        "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+        "episode": [
+            "https://rickandmortyapi.com/api/episode/1",
+            "https://rickandmortyapi.com/api/episode/2",
+            "https://rickandmortyapi.com/api/episode/3"
+        ],
+        "url": "https://rickandmortyapi.com/api/character/1",
+        "created": "2017-11-04T18:48:46.250Z"
+    }
+""".trimIndent()
 
 val allCharacters = """
     {

@@ -3,7 +3,7 @@ package com.ezam.rickandmorty.data.remote
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CharactersResult (
+data class CharacterListResult (
     val info: InfoDTO = InfoDTO(),
     val results: List<CharacterDTO> = emptyList(),
 ){
