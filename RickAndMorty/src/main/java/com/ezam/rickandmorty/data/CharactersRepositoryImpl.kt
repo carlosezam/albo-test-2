@@ -11,6 +11,7 @@ import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.domain.IdGenerator
 import com.ezam.rickandmorty.domain.ImageDownloader
 import com.ezam.rickandmorty.domain.VitalStatus
+import com.punky.core.utils.enumFromName
 import okhttp3.internal.EMPTY_BYTE_ARRAY
 import javax.inject.Inject
 
@@ -92,7 +93,7 @@ class CharactersRepositoryImpl @Inject constructor(
 fun CharacterEntity.toCharacter() = Character(
     name = name,
     image = image,
-    status = VitalStatus.fromString(status)
+    status = enumFromName<VitalStatus>(status) ?: VitalStatus.Unknown
 )
 
 fun CharacterItemDTO.toCharacterEntity(downloadedImage: ByteArray) = CharacterEntity(

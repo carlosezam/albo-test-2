@@ -1,4 +1,4 @@
-package com.ezam.rickandmorty
+package com.ezam.rickandmorty.utils
 
 import com.ezam.rickandmorty.domain.IdGenerator
 import kotlin.random.Random
