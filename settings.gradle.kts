@@ -16,3 +16,4 @@ pluginManagement {
 rootProject.name = "Punky"
 include(":app")
 include(":RickAndMorty")
+include(":core")
