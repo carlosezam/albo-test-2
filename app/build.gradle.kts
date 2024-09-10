@@ -11,13 +11,15 @@ plugins {
     alias(libs.plugins.kapt)
     alias(libs.plugins.play.publisher)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 play {
     serviceAccountCredentials.set(file("../punky.json"))
-    track.set("production")
+    track.set("internal") // internal/alpha/beta/production
     //userFraction.set(0.1)
-    //defaultToAppBundles.set(true)
+    defaultToAppBundles.set(true)
     resolutionStrategy.set(ResolutionStrategy.AUTO)
     releaseStatus.set(ReleaseStatus.COMPLETED)
 
@@ -52,7 +54,7 @@ android {
         applicationId = "com.carlosezam.punky"
         minSdk = 21
         targetSdk = 34
-        versionCode = 22
+        versionCode = 25
         versionName = "7.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -98,6 +100,7 @@ android {
 dependencies {
 
     implementation(project(":RickAndMorty"))
+    implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -156,6 +159,12 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    // firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.config.ktx)
+    //implementation(libs.firebase.analytics.ktx)
+    implementation(libs.firebase.crashlytics.ktx)
 }
 
 fun getPropOrEnv(entry: String, properties: Properties? = null) : String? {

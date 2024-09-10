@@ -1,5 +1,6 @@
 keystore
 punky.json
+app/google-services.json
 *~
 
 *.iml
