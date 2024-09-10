@@ -1,6 +1,8 @@
 package com.ezam.rickandmorty.data
 
 import android.content.res.Resources.NotFoundException
+import com.ezam.rickandmorty.data.local.CharacterDao
+import com.ezam.rickandmorty.data.local.CharacterEntity
 import com.ezam.rickandmorty.data.remote.CharacterItemDTO
 import com.ezam.rickandmorty.data.remote.CharacterListResult
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
@@ -23,43 +25,85 @@ class CharactersRepositoryImpl @Inject constructor(
     private val api: RickandmortyApi,
     private val idGenerator: IdGenerator,
     private val imageDownloader: ImageDownloader,
+    private val characterDao: CharacterDao
 ) : CharacterRepository {
+
+    // Variable para almacenar el último ID no procesado
+    private var lastFailedId: Int? = null
 
     override suspend fun loadCharacters(page: Int) : LoadCharactersResult {
 
-        val result = api.getCharacters(page)
+        val local = characterDao.getPage(page)
+        if(local?.size == 20)
+            return LoadCharactersResult.Data( characters = local.map { it.toCharacter() }, next = page + 1 )
 
-        result.onSuccess {
-            val characters = it.results.map{ it.toCharacter(imageDownloader) }
-            return LoadCharactersResult.Data(characters = characters, next = page + 1)
+        val remote = api.getCharacters(page)
+
+        val error = remote.exceptionOrNull()
+        when{
+            error is NotFoundException -> return LoadCharactersResult.EndOfData
+            error != null -> return LoadCharactersResult.RetryAgain
         }
 
+        val charactersWithImage = remote.getOrThrow().results.map {
+            val image = imageDownloader.downloadImageAsByteArray(it.image) ?: ByteArray(0)
+            it.toCharacterEntity(image)
+        }
 
-        val error = result.exceptionOrNull()
+        characterDao.upsert(charactersWithImage)
 
-        if(error is NotFoundException)
-            return LoadCharactersResult.EndOfData
-
-        return LoadCharactersResult.RetryAgain
+        val newCharacters = characterDao.getPage(page)?.map { it.toCharacter() } ?: emptyList()
+        return LoadCharactersResult.Data(characters = newCharacters, next = page + 1)
     }
 
     override suspend fun loadCharacter(id: Int): Character? {
-        return api.getCharacter(id).getOrNull()?.toCharacter(imageDownloader)
+        val local = characterDao.getById(id)
+        if( local != null )
+            return local.toCharacter()
+
+        val remote = api.getCharacter(id).getOrNull() ?: return null
+
+        val image = imageDownloader.downloadImageAsByteArray(remote.image) ?: ByteArray(0)
+
+        characterDao.upsert( remote.toCharacterEntity(image) )
+
+        return characterDao.getById(id)?.toCharacter()
     }
 
     override suspend fun randomCharacter(): Character? {
-        return api.getCharacter( idGenerator.nextId() ).getOrNull()?.toCharacter(imageDownloader)
+        // Si hay un ID fallido, lo volvemos a intentar, de lo contrario generamos uno nuevo
+        val idToTry = lastFailedId ?: idGenerator.nextId()
+
+        // Intentamos cargar el personaje
+        val character = loadCharacter(idToTry)
+
+        // Si falla (es null), guardamos este ID para reintentarlo la próxima vez
+        if (character == null) {
+            lastFailedId = idToTry
+        } else {
+            // Si es exitoso, limpiamos el lastFailedId
+            lastFailedId = null
+        }
+
+        return character
     }
 }
 
-suspend fun CharacterListResult.CharacterDTO.toCharacter(imageDownloader: ImageDownloader) = Character(
+fun CharacterEntity.toCharacter() = Character(
     name = name,
-    image = imageDownloader.downloadImageAsByteArray(image) ?: ByteArray(0),
+    image = image,
     status = VitalStatus.fromString(status)
 )
 
-suspend fun CharacterItemDTO.toCharacter(imageDownloader: ImageDownloader) = Character(
+fun CharacterItemDTO.toCharacterEntity(downloadedImage: ByteArray) = CharacterEntity(
+    id = id,
     name = name,
-    image = imageDownloader.downloadImageAsByteArray(image) ?: ByteArray(0),
-    status = VitalStatus.fromString(status)
+    status = status,
+    image = downloadedImage
+)
+fun CharacterListResult.CharacterDTO.toCharacterEntity(downloadedImage: ByteArray) = CharacterEntity(
+    id = id,
+    name = name,
+    status = status,
+    image = downloadedImage,
 )

@@ -18,7 +18,7 @@ hilt-android = "2.52"
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
-google-ksp = { id = "com.google.devtools.ksp", version = "2.0.20-1.0.24" }
+google-ksp = { id = "com.google.devtools.ksp", version = "2.0.20-1.0.25" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 play-publisher = { id = "com.github.triplet.play", version = "3.11.0" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -60,6 +60,7 @@ roboelectric = { module = "org.robolectric:robolectric", version = "4.13" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version = "4.1.0" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 mockk = { module = "io.mockk:mockk", version = "1.13.12" }
+google-truth = { module = "com.google.truth:truth", version= "1.4.4" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
 # coroutines
@@ -97,9 +98,6 @@ room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-testing = { module = "androidx.room:room-testing", version.ref = "room" }
 
 paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "paging" }
-
-dagger = { module = "com.google.dagger:dagger", version = "2.48" }
-dagger-compiler = { module = "com.google.dagger:dagger-compiler", version = "2.48" }
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }

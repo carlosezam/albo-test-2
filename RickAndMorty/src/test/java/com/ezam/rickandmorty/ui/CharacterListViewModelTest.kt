@@ -70,8 +70,8 @@ class CharacterListViewModelTest {
     @Test
     fun `characters muestra los datos devueltos por el repositorio`(){
 
-        val character1 = Character("1", "1", VitalStatus.Alive)
-        val character2 = Character("2", "2", VitalStatus.Alive)
+        val character1 = Character("1", ByteArray(0), VitalStatus.Alive)
+        val character2 = Character("2", ByteArray(0), VitalStatus.Alive)
         // given
         coEvery { repository.loadCharacters(any()) }returns
                 LoadCharactersResult.Data(characters = listOf(character1), next = 2) andThen

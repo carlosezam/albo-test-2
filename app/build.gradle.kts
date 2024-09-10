@@ -147,11 +147,11 @@ dependencies {
 
     // room
     implementation(libs.room.runtime)
-    implementation(libs.room.paging)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     testImplementation(libs.room.testing)
 
+    implementation(libs.room.paging)
     implementation(libs.paging.runtime.ktx)
 
     implementation(libs.hilt.android)

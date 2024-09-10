@@ -8,6 +8,6 @@ interface CharacterRepository {
     suspend fun randomCharacter() : Character?
 }
 
-interface IdGenerator{
+fun interface IdGenerator{
     fun nextId(): Int
 }

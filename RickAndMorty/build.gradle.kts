@@ -21,6 +21,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        ksp{
+            arg("room.schemaLocation", "$projectDir/schemas".toString())
+        }
     }
 
     buildTypes {
@@ -69,6 +73,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.roboelectric)
+    testImplementation(libs.google.truth)
 
     androidTestImplementation(libs.androidx.junit.ktx)
 
@@ -103,6 +108,12 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.mock)
     debugImplementation(libs.slf4j)
+
+    // room
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

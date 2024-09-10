@@ -3,13 +3,27 @@ package com.ezam.rickandmorty.domain
 import android.content.res.Resources.NotFoundException
 import com.ezam.rickandmorty.data.CharactersRepositoryImpl
 import com.ezam.rickandmorty.data.LoadCharactersResult
+import com.ezam.rickandmorty.data.local.CharacterDao
+import com.ezam.rickandmorty.data.local.CharacterEntity
+import com.ezam.rickandmorty.data.remote.CharacterItemDTO
 import com.ezam.rickandmorty.data.remote.CharacterListResult
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
+import com.ezam.rickandmorty.data.toCharacter
+import com.google.common.truth.Truth.*
+import com.google.common.truth.TruthJUnit
+import io.mockk.Called
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.coVerifyOrder
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
+import io.mockk.just
+import io.mockk.mockk
+import io.mockk.runs
+import io.mockk.spyk
+import io.mockk.verify
 import io.mockk.verifySequence
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
@@ -26,79 +40,123 @@ class CharactersRepositoryImplTest {
     @get:Rule
     val mockkRule = MockKRule(this)
 
-    @MockK
-    lateinit var api: RickandmortyApi
+    // Mocks
+    private val characterDao: CharacterDao = mockk()
+    private val api: RickandmortyApi = mockk()
+    private val imageDownloader: ImageDownloader = mockk()
+    private val idGenerator: IdGenerator = mockk()
 
-    @MockK
-    lateinit var idGenerator: IdGenerator
+    // Repositorio a testear
+    private lateinit var characterRepository: CharacterRepository
 
-    lateinit var repository: CharactersRepositoryImpl
 
     @Before
     fun setup(){
-        repository = CharactersRepositoryImpl(api, idGenerator)
+        characterRepository = CharactersRepositoryImpl(api, idGenerator, imageDownloader, characterDao)
     }
 
     @Test
-    fun `result existoso cuando api responde ok`() = runBlocking {
+    fun `debe retornar el character local si existe`(): Unit = runBlocking {
+        // Arrange: Simulamos que el personaje local existe en la base de datos
+        val localCharacterEntity = CharacterEntity(1, "offline", "dead", ByteArray(0))
 
-        // given
-        val charactersResult = json.decodeFromString<CharacterListResult>(allCharacters)
+        coEvery { characterDao.getById(1) } returns localCharacterEntity
 
-        coEvery { api.getCharacters(any()) } returns Result.success(charactersResult)
+        // Act: Llamamos al metodo
+        val result = characterRepository.loadCharacter(1)
 
-        // when
-        val result = repository.loadCharacters(2)
+        // Assert: Verificamos que se devuelve el character local
+        assertThat(result).isEqualTo(localCharacterEntity.toCharacter())
 
-        // then
-        assertTrue( result is LoadCharactersResult.Data )
-        assertEquals( 2, (result as LoadCharactersResult.Data).characters.size )
-        assertEquals( 3, result.next )
+        // Verificamos que la API y el imageDownloader no fueron llamados
+        verify { api wasNot Called }
+        verify { imageDownloader wasNot Called }
     }
 
     @Test
-    fun `retorna EndOfData cuando el api devuelve un notFound`(): Unit = runBlocking {
-        // given
+    fun `debe retorar null si no se ecuentra el character ni en local ni remoto`(): Unit = runBlocking {
+        // Arrange: Simulamos que el personaje no está ni en la base de datos ni remotamente
+        coEvery { characterDao.getById(1) } returns null
+        coEvery { api.getCharacter(1) } returns Result.failure(NotFoundException())
 
-        coEvery { api.getCharacters(any()) } returns Result.failure(NotFoundException())
+        // Act: Llamamos al método
+        val result = characterRepository.loadCharacter(1)
 
-        // when
-        val result = repository.loadCharacters(2)
-
-        // then
-        assertTrue( result is LoadCharactersResult.EndOfData )
+        // Assert: Verificamos que el resultado es null
+        assertThat(result).isNull()
     }
 
     @Test
-    fun `retorna RetryAgain cuando el api devuelve un error desconocido`(): Unit = runBlocking {
-        // given
+    fun `debe guardar el character con la imagen cuando solo se encuentra en remoto`(): Unit = runBlocking {
+        // Arrange: Simulamos que no hay personaje local pero que existe remotamente
 
-        coEvery { api.getCharacters(any()) } returns Result.failure(ConnectException())
+        // Stub del item remoto
+        val remoteCharacter = CharacterItemDTO(1, "online", "online_image_url", "alive")
 
-        // when
-        val result = repository.loadCharacters(2)
+        // Stub del resultado esperado
+        val characterEntity = CharacterEntity(1, "online", "alive", byteArrayOf(1, 2, 3))
 
-        // then
-        assertTrue( result is LoadCharactersResult.RetryAgain )
+        coEvery { characterDao.getById(1) } returns null andThen characterEntity
+        coEvery { api.getCharacter(1) } returns Result.success(remoteCharacter)
+
+        coEvery { imageDownloader.downloadImageAsByteArray("online_image_url") } returns byteArrayOf(1, 2, 3)
+        coEvery { characterDao.upsert(characterEntity) } just Runs
+
+        // Act: Llamamos al método
+        val result = characterRepository.loadCharacter(1)
+
+        // Assert: Verificamos que el personaje se guardó y se devolvió correctamente
+        assertThat(result).isEqualTo(characterEntity.toCharacter())
+        coVerify { characterDao.upsert(characterEntity) }
     }
 
     @Test
-    fun `randomCharacter retorna un random`(): Unit = runBlocking {
+    fun `debe llamar a loadCharacter con id generado random`(): Unit = runBlocking {
+        // Arrange: Creamos un spy del repository para poder verificar llamadas internas
+        val spyRepository = spyk(characterRepository)
 
-        coEvery { api.getCharacter(any()) } returns Result.failure(ConnectException())
-        every { idGenerator.nextId() } returns 5 andThen 10 andThen 0
+        val randomId = 42
+        val expectedCharacter = Character("Rick", byteArrayOf(1, 2, 3), VitalStatus.Alive)
 
-        // when
-        repeat(times = 3){ repository.randomCharacter() }
+        every { idGenerator.nextId() } returns randomId
+        coEvery { spyRepository.loadCharacter(randomId) } returns expectedCharacter
 
-        coVerifyOrder {
-            idGenerator.nextId()
-            api.getCharacter(5)
-            idGenerator.nextId()
-            api.getCharacter(10)
-            idGenerator.nextId()
-            api.getCharacter(0)
-        }
+        // Act: Llamamos a randomCharacter
+        val result = spyRepository.randomCharacter()
+
+        // Assert: Verificamos que se llamó a loadCharacter con el ID generado
+        coVerify { spyRepository.loadCharacter(randomId) }
+
+        // Verificamos que el resultado sea el esperado
+        assertThat(result).isEqualTo(expectedCharacter)
+    }
+
+    @Test
+    fun `debe reintentar con el mismo id si loadCharacter falla`(): Unit = runBlocking {
+        // Arrange: Creamos un spy del repository para poder verificar llamadas internas
+        val spyRepository = spyk(characterRepository)
+
+        val failedId = 42
+        val validCharacter = Character("Rick", byteArrayOf(1, 2, 3), VitalStatus.Alive )
+
+        // Simulamos que se genera el ID que falla la primera vez y es exitoso la segunda
+        every { idGenerator.nextId() } returns failedId andThen failedId.plus(1)
+        coEvery { spyRepository.loadCharacter(failedId) } returns null andThen validCharacter
+
+        // Act: Llamamos a randomCharacter por primera vez (falla)
+        var result = spyRepository.randomCharacter()
+
+        // Assert: Verificamos que no se devuelve un personaje
+        assertThat(result).isNull()
+
+        // Act: Llamamos a randomCharacter nuevamente (esta vez debería ser exitoso)
+        result = spyRepository.randomCharacter()
+
+        // Assert: Verificamos que ahora devuelve el personaje correcto
+        assertThat(result).isEqualTo(validCharacter)
+
+        // Verificamos que se usó el mismo ID ambas veces
+        coVerify(exactly = 2) { spyRepository.loadCharacter(failedId) }
     }
 }
 

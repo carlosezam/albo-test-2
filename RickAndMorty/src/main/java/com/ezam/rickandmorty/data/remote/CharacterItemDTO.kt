@@ -8,5 +8,4 @@ data class CharacterItemDTO (
     val name: String,
     val image: String,
     val status: String,
-
 )
