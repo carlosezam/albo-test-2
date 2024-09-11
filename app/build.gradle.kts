@@ -57,7 +57,7 @@ android {
         versionCode = 25
         versionName = "7.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.punky.CustomTestRunner"
 
         ksp{
             arg("room.schemaLocation", "$projectDir/schemas".toString())
@@ -101,6 +101,8 @@ dependencies {
 
     implementation(project(":RickAndMorty"))
     implementation(project(":core"))
+
+    androidTestImplementation (libs.androidx.runner)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -159,6 +161,9 @@ dependencies {
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
 
     // firebase
     implementation(platform(libs.firebase.bom))

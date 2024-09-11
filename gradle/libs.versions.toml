@@ -30,6 +30,7 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.
 
 [libraries]
 #firebase
+androidx-runner = { module = "androidx.test:runner", version = "1.6.2" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version = "33.2.0" }
 firebase-config-ktx = { module = "com.google.firebase:firebase-config-ktx" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
@@ -109,6 +110,7 @@ paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.re
 
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-android" }
 hilt-android-compiler = {module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt-android" }
+hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version = "2.44" }
 
 androidx-palette = { module = "androidx.palette:palette", version = "1.0.0"}
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
