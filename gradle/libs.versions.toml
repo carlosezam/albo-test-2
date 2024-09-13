@@ -7,7 +7,7 @@ playPublisher = "3.11.0"
 room = "2.6.1"  # Asegúrate de reemplazar esto con la versión adecuada
 paging = "3.3.0"  # Asegúrate de reemplazar esto con la versión adecuada
 espressoCore = "3.6.1"
-composeBom = "2024.08.00"
+composeBom = "2024.09.01"
 
 # Plugins
 agp = "8.2.2"
