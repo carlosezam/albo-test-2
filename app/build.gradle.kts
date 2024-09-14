@@ -69,7 +69,8 @@ android {
         release {
             isDebuggable = false
             signingConfig = signingConfigs.getByName("GooglePlay")
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
         debug {
