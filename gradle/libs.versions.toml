@@ -25,6 +25,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt-android" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2"}
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.2"}
+apollographql-apollo = { id = "com.apollographql.apollo", version = "4.0.0" }
 
 [libraries]
 #firebase
@@ -109,3 +110,5 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 androidx-palette = { module = "androidx.palette:palette", version = "1.0.0"}
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
+
+apollographql-apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version = "4.0.0" }

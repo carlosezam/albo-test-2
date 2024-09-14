@@ -6,6 +6,17 @@ plugins {
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.apollographql.apollo)
+}
+
+apollo {
+    service("service") {
+        packageName.set("com.ezam.rickandmorty.graphql")
+        introspection {
+            endpointUrl.set("https://rickandmortyapi.com/graphql")
+            schemaFile.set(file("src/main/graphql/schema.graphqls"))
+        }
+    }
 }
 
 android {
@@ -110,6 +121,12 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.mock)
     debugImplementation(libs.slf4j)
+
+    // logging
+    implementation(libs.okhttp.logging.interceptor)
+
+    // graphql
+    implementation(libs.apollographql.apollo.runtime)
 
     // room
     implementation(libs.room.runtime)
