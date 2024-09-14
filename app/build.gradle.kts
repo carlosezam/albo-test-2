@@ -19,6 +19,7 @@ play {
     serviceAccountCredentials.set(file("../punky.json"))
     track.set("internal") // internal/alpha/beta/production
     //userFraction.set(0.1)
+    updatePriority.set(5)
     defaultToAppBundles.set(true)
     resolutionStrategy.set(ResolutionStrategy.AUTO)
     releaseStatus.set(ReleaseStatus.COMPLETED)
@@ -54,8 +55,8 @@ android {
         applicationId = "com.carlosezam.punky"
         minSdk = 21
         targetSdk = 34
-        versionCode = 25
-        versionName = "7.0"
+        versionCode = 39
+        versionName = "8"
 
         testInstrumentationRunner = "com.example.punky.CustomTestRunner"
 
@@ -66,6 +67,7 @@ android {
 
     buildTypes {
         release {
+            isDebuggable = false
             signingConfig = signingConfigs.getByName("GooglePlay")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
