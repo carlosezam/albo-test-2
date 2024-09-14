@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
 
             var blockScreen by remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
 
             SystemBroadcastReceiver(systemAction = createAction(ACTION_LOCK_SCREEN)) {
