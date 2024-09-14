@@ -101,6 +101,7 @@ dependencies {
 
     implementation(project(":RickAndMorty"))
     implementation(project(":core"))
+    androidTestImplementation(libs.androidx.ui.test.junit4.android)
 
     androidTestImplementation (libs.androidx.runner)
 
@@ -115,15 +116,32 @@ dependencies {
     implementation(libs.kotlin.faker)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.google.truth)
+    //androidTestImplementation(libs.mockk)
 
     implementation(libs.coroutines.android)
     testImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.coroutines.test) {
-        // see: https://github.com/Kotlin/kotlinx.coroutines/tree/master/kotlinx-coroutines-debug#debug-agent-and-android
-        exclude(group= "org.jetbrains.kotlinx", module= "kotlinx-coroutines-debug")
-    }
-
+    androidTestImplementation(libs.coroutines.test)
     testImplementation(libs.mockito.kotlin)
+
+    // compose
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.compose.constraintlayout)
+    implementation(libs.androidx.activity.compose)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // compose utils
+    implementation(libs.coil.compose)
+    implementation(libs.coil.gif)
+
+    // compose accompanist
+    //implementation(libs.accompanist.drawablepainter)
 
     // ktor
     //implementation("io.ktor:ktor-client-android:$ktor_version")
@@ -141,6 +159,7 @@ dependencies {
 
     // ktx
     implementation(libs.lifecycle.runtime.ktx)
+    implementation(libs.activity.ktx)
 
     // navigation
     implementation(libs.navigation.fragment.ktx)
@@ -170,6 +189,9 @@ dependencies {
     implementation(libs.firebase.config.ktx)
     //implementation(libs.firebase.analytics.ktx)
     implementation(libs.firebase.crashlytics.ktx)
+
+    // google play core
+    implementation(libs.play.app.update.ktx)
 }
 
 fun getPropOrEnv(entry: String, properties: Properties? = null) : String? {

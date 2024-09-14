@@ -13,6 +13,7 @@ composeBom = "2024.09.01"
 agp = "8.2.2"
 hilt-android = "2.52"
 junit = "1.2.1"
+uiTestJunit4Android = "1.7.1"
 
 
 [plugins]
@@ -36,6 +37,9 @@ firebase-config-ktx = { module = "com.google.firebase:firebase-config-ktx" }
 firebase-analytics-ktx = { module = "com.google.firebase:firebase-analytics-ktx" }
 firebase-crashlytics-ktx = { module = "com.google.firebase:firebase-crashlytics-ktx" }
 
+#google play core
+play-app-update-ktx = { module = "com.google.android.play:app-update-ktx", version = "2.1.0" }
+
 #compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -52,6 +56,7 @@ androidx-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4
 
 #compose utils
 coil-compose = { module = "io.coil-kt:coil-compose", version = "2.4.0"}
+coil-gif = { module = "io.coil-kt:coil-gif", version = "2.7.0" }
 
 androidx-core-ktx = { module = "androidx.core:core-ktx", version = "1.13.1" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version = "1.7.0" }
@@ -90,6 +95,8 @@ slf4j = { module = "org.slf4j:slf4j-simple", version = "2.0.7" }
 
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.5.0" }
 
+# ktx
+activity-ktx = { module = "androidx.activity:activity-ktx", version = "1.9.2" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version = "2.8.4" }
 lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version = "2.8.4" }
 
@@ -114,3 +121,4 @@ hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", vers
 
 androidx-palette = { module = "androidx.palette:palette", version = "1.0.0"}
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
+androidx-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version.ref = "uiTestJunit4Android" }
