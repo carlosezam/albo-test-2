@@ -3,7 +3,6 @@ package com.ezam.rickandmorty.data.remote
 import android.content.res.Resources.NotFoundException
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
-import io.ktor.client.request.request
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -13,9 +12,8 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.*
 import org.junit.Test
 import java.net.ConnectException
-import java.net.UnknownHostException
 
-class RickandmortyApiTest{
+class RickandmortyRestApiTest{
 
     @Test
     fun `prev es null, cuando se consulta la primera pagina`(): Unit = runBlocking {
@@ -28,7 +26,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val api = RickandmortyApiRest( mockEngine ).getCharacters().getOrThrow()
+        val api = RickandmortyRestApi( mockEngine ).getCharacters().getOrThrow()
 
         assertNull(api.info.prev)
     }
@@ -44,7 +42,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val api = RickandmortyApiRest( mockEngine ).getCharacters().getOrThrow()
+        val api = RickandmortyRestApi( mockEngine ).getCharacters().getOrThrow()
 
         assertNull(api.info.next)
     }
@@ -60,7 +58,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val response = RickandmortyApiRest( mockEngine ).getCharacters().getOrThrow()
+        val response = RickandmortyRestApi( mockEngine ).getCharacters().getOrThrow()
 
         assertEquals(2, response.results.size)
 
@@ -82,7 +80,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val response = RickandmortyApiRest( mockEngine ).getCharacters().exceptionOrNull()
+        val response = RickandmortyRestApi( mockEngine ).getCharacters().exceptionOrNull()
 
         assertNotNull( response )
         assertTrue( response is NotFoundException ) //UnknownHostException
@@ -94,7 +92,7 @@ class RickandmortyApiTest{
             throw ConnectException()
         }
 
-        val response =  RickandmortyApiRest( mockEngine ).getCharacters().exceptionOrNull()
+        val response =  RickandmortyRestApi( mockEngine ).getCharacters().exceptionOrNull()
 
         assertNotNull(response)
         assertTrue( response is ConnectException )
@@ -111,7 +109,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val response = RickandmortyApiRest( mockEngine ).getCharacters().exceptionOrNull()
+        val response = RickandmortyRestApi( mockEngine ).getCharacters().exceptionOrNull()
 
         assertNotNull( response )
         assertTrue( response !is NotFoundException ) //UnknownHostException
@@ -127,7 +125,7 @@ class RickandmortyApiTest{
             )
         }
 
-        val response = RickandmortyApiRest(mockEngine).getCharacter(1).getOrThrow()
+        val response = RickandmortyRestApi(mockEngine).getCharacter(1).getOrThrow()
 
         assertEquals(1, response.id)
         assertEquals("https://rickandmortyapi.com/api/character/avatar/1.jpeg", response.image)
