@@ -39,10 +39,12 @@ class RickandmortyRestApi @Inject constructor(engine: HttpClientEngine) : Rickan
         return try {
             val response = client.get("https://rickandmortyapi.com/api/character?page=$page")
 
-            if (response.status == HttpStatusCode.NotFound) {
+            if( response.status == HttpStatusCode.OK ){
+                Result.success(response.body())
+            } else if (response.status == HttpStatusCode.NotFound) {
                 Result.failure(NotFoundException())
             } else {
-                Result.success(response.body())
+                Result.failure(UnknownError())
             }
 
         } catch (e: IOException) {

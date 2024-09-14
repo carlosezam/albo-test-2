@@ -1,6 +1,7 @@
 package com.ezam.rickandmorty.data.remote
 
 import android.content.res.Resources.NotFoundException
+import com.google.common.truth.Truth
 import io.ktor.client.engine.mock.MockEngine
 import io.ktor.client.engine.mock.respond
 import io.ktor.http.ContentType
@@ -96,6 +97,21 @@ class RickandmortyRestApiTest{
 
         assertNotNull(response)
         assertTrue( response is ConnectException )
+    }
+
+    @Test
+    fun `retorna failure cuando hay un gateway timeout`(): Unit = runBlocking {
+        val mockEngine = MockEngine {
+            respond(
+                content = ByteArray(0),
+                status = HttpStatusCode.GatewayTimeout,
+                headers = headersOf()
+            )
+        }
+
+        val response =  RickandmortyRestApi( mockEngine ).getCharacters().exceptionOrNull()
+
+        Truth.assertThat(response).isNotNull()
     }
 
     @Test
