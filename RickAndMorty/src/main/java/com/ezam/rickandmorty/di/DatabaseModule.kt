@@ -1,4 +1,4 @@
-package com.example.punky.di
+package com.ezam.rickandmorty.di
 
 import android.content.Context
 import androidx.room.Room

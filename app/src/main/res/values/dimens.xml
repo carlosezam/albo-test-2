@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="icon_size">48dp</dimen>
 
-    <dimen name="mr_xs">4dp</dimen>
-    <dimen name="mr_sm">8dp</dimen>
-    <dimen name="mr_md">12dp</dimen>
-    <dimen name="mr_lg">16dp</dimen>
-    <dimen name="mr_xl">24dp</dimen>
-
-    <dimen name="item_xs">48dp</dimen>
-    <dimen name="item_sm">56dp</dimen>
-    <dimen name="item_md">112dp</dimen>
-    <dimen name="item_lg">224dp</dimen>
 </resources>

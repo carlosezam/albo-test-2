@@ -43,7 +43,7 @@ class RickandmortyApiRest @Inject constructor( engine: HttpClientEngine ) : Rick
     override suspend fun getCharacters(page: Int) : Result<CharacterListResult> {
 
         return try{
-            val response = client.get("https://rickandmortyapi.com/api/character?page=1")
+            val response = client.get("https://rickandmortyapi.com/api/character?page=$page")
 
             if( response.status == HttpStatusCode.NotFound){
                 Result.failure(NotFoundException())

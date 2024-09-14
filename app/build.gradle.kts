@@ -163,23 +163,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.activity.ktx)
 
-    // navigation
-    implementation(libs.navigation.fragment.ktx)
-    implementation(libs.navigation.ui.ktx)
-
-    // glide
-    implementation(libs.glide)
-    ksp(libs.glide.compiler)
-
-    // room
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-    implementation(libs.room.ktx)
-    testImplementation(libs.room.testing)
-
-    implementation(libs.room.paging)
-    implementation(libs.paging.runtime.ktx)
-
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
