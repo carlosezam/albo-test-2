@@ -10,6 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 
 @Composable
 fun SystemBroadcastReceiver(
@@ -37,6 +38,33 @@ fun SystemBroadcastReceiver(
 
         onDispose {
             context.unregisterReceiver(receiver)
+        }
+    }
+}
+
+@Composable
+fun LocalBroadcastReceiver(
+    systemAction: String,
+    onSystemEvent: (intent: Intent?) -> Unit
+) {
+    val context = LocalContext.current
+
+    val currentOnSystemEvent by rememberUpdatedState(onSystemEvent)
+
+    DisposableEffect(context, systemAction) {
+
+        val intentFilter = IntentFilter(systemAction)
+
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                currentOnSystemEvent(intent)
+            }
+        }
+
+        LocalBroadcastManager.getInstance(context).registerReceiver(receiver, intentFilter)
+
+        onDispose {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver)
         }
     }
 }
