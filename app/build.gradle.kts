@@ -104,9 +104,7 @@ dependencies {
 
     implementation(project(":RickAndMorty"))
     implementation(project(":core"))
-    androidTestImplementation(libs.androidx.ui.test.junit4.android)
 
-    androidTestImplementation (libs.androidx.runner)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -117,15 +115,8 @@ dependencies {
 
     // testing
     implementation(libs.kotlin.faker)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit.ktx)
-    androidTestImplementation(libs.google.truth)
-    //androidTestImplementation(libs.mockk)
 
     implementation(libs.coroutines.android)
-    testImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.coroutines.test)
-    testImplementation(libs.mockito.kotlin)
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
@@ -136,26 +127,16 @@ dependencies {
     implementation(libs.androidx.compose.constraintlayout)
     implementation(libs.androidx.activity.compose)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
     // compose utils
     implementation(libs.coil.compose)
     implementation(libs.coil.gif)
 
-    // compose accompanist
-    //implementation(libs.accompanist.drawablepainter)
-
     // ktor
-    //implementation("io.ktor:ktor-client-android:$ktor_version")
-    //implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.serialization.json)
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.okhttp)
     implementation(libs.okhttp.logging.interceptor)
-
-
 
     // kotlinx serialization
     implementation(libs.serialization.json)
@@ -167,9 +148,6 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
 
-    androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.android.compiler)
-
     // firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.config.ktx)
@@ -178,6 +156,22 @@ dependencies {
 
     // google play core
     implementation(libs.play.app.update.ktx)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockito.kotlin)
+
+    androidTestImplementation(libs.coroutines.test)
+    androidTestImplementation(libs.androidx.ui.test.junit4.android)
+    androidTestImplementation (libs.androidx.runner)
+    androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.google.truth)
+    androidTestImplementation(libs.hilt.android.testing)
+    
+    kaptAndroidTest(libs.hilt.android.compiler)
 }
 
 fun getPropOrEnv(entry: String, properties: Properties? = null) : String? {
