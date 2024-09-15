@@ -1,23 +1,22 @@
 package com.example.punky.ui
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.compose.rememberAsyncImagePainter
 import com.example.punky.ui.components.LocalBroadcastReceiver
-import com.example.punky.ui.components.SystemBroadcastReceiver
 import com.example.punky.ui.components.imageRequest
 import com.example.punky.ui.components.rememberGifImageLoader
 import com.example.punky.ui.dialogs.FullScreenImageDialog
@@ -31,7 +30,6 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.google.android.play.core.ktx.updatePriority
 import com.punky.core.utils.createAction
-import com.punky.core.utils.nonExportedBroadcastIntent
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

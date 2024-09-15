@@ -2,16 +2,16 @@ package com.ezam.rickandmorty.di
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.network.okHttpClient
-import com.ezam.rickandmorty.utils.RandomIdGenerator
 import com.ezam.rickandmorty.data.CharactersRepositoryImpl
+import com.ezam.rickandmorty.data.local.RemoteConfiguration
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
+import com.ezam.rickandmorty.data.remote.RickandmortyApolloApi
 import com.ezam.rickandmorty.data.remote.RickandmortyRestApi
 import com.ezam.rickandmorty.domain.CharacterRepository
 import com.ezam.rickandmorty.domain.Configuration
 import com.ezam.rickandmorty.domain.IdGenerator
 import com.ezam.rickandmorty.domain.IdGeneratorType
-import com.ezam.rickandmorty.data.local.RemoteConfiguration
-import com.ezam.rickandmorty.data.remote.RickandmortyApolloApi
+import com.ezam.rickandmorty.utils.RandomIdGenerator
 import com.ezam.rickandmorty.utils.SequentialIdGenerator
 import dagger.Binds
 import dagger.Lazy

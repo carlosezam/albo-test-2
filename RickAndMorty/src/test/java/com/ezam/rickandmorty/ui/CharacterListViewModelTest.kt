@@ -8,14 +8,13 @@ import com.ezam.rickandmorty.utils.MainDispatcherRule
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.coVerifyOrder
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
-import io.mockk.verifyOrder
-import kotlin.test.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import kotlin.test.assertContentEquals
+import kotlin.test.assertFalse
 
 class CharacterListViewModelTest {
 

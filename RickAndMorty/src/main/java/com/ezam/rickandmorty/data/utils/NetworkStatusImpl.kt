@@ -1,11 +1,9 @@
 package com.ezam.rickandmorty.data.utils
 
-import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import com.ezam.rickandmorty.domain.NetworkStatus
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject

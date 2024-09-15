@@ -2,36 +2,27 @@ package com.ezam.rickandmorty.domain
 
 import android.content.res.Resources.NotFoundException
 import com.ezam.rickandmorty.data.CharactersRepositoryImpl
-import com.ezam.rickandmorty.data.LoadCharactersResult
 import com.ezam.rickandmorty.data.local.CharacterDao
 import com.ezam.rickandmorty.data.local.CharacterEntity
 import com.ezam.rickandmorty.data.remote.CharacterItemDTO
-import com.ezam.rickandmorty.data.remote.CharacterListResult
 import com.ezam.rickandmorty.data.remote.RickandmortyApi
 import com.ezam.rickandmorty.data.toCharacter
-import com.google.common.truth.Truth.*
-import com.google.common.truth.TruthJUnit
+import com.google.common.truth.Truth.assertThat
 import io.mockk.Called
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifyOrder
 import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.junit4.MockKRule
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.runs
 import io.mockk.spyk
 import io.mockk.verify
-import io.mockk.verifySequence
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.net.ConnectException
 
 private val json = Json { ignoreUnknownKeys = true }
 

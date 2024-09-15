@@ -1,5 +1,5 @@
-import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 import com.github.triplet.gradle.androidpublisher.ReleaseStatus
+import com.github.triplet.gradle.androidpublisher.ResolutionStrategy
 import java.util.Properties
 
 plugins {

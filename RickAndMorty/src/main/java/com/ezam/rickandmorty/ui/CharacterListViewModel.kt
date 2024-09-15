@@ -6,7 +6,6 @@ import com.ezam.rickandmorty.data.LoadCharactersResult
 import com.ezam.rickandmorty.domain.Character
 import com.ezam.rickandmorty.domain.CharacterRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
