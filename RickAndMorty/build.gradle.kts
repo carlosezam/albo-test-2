@@ -74,21 +74,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.lifecycle.viewmodel.ktx)
-
     implementation(libs.androidx.palette)
 
     //coroutines
     implementation(libs.coroutines.android)
-    testImplementation(libs.coroutines.test)
-
-    // Testing
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlin.test)
-    testImplementation(libs.roboelectric)
-    testImplementation(libs.google.truth)
-
-    androidTestImplementation(libs.androidx.junit.ktx)
 
     // compose
     implementation(platform(libs.androidx.compose.bom))
@@ -99,15 +88,8 @@ dependencies {
     implementation(libs.androidx.compose.constraintlayout)
     implementation(libs.androidx.activity.compose)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    androidTestImplementation(libs.androidx.compose.ui.test)
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-
     // compose utils
     implementation(libs.coil.compose)
-
 
     // kotlinx serialization
     implementation(libs.serialization.json)
@@ -117,10 +99,8 @@ dependencies {
     implementation(libs.ktor.client.okhttp)
     implementation(libs.ktor.client.negotiation)
     implementation(libs.ktor.client.serialization.json)
-    //implementation(libs.okhttp.logging.interceptor)
     implementation(libs.ktor.client.logging)
     implementation(libs.ktor.client.mock)
-    debugImplementation(libs.slf4j)
 
     // logging
     implementation(libs.okhttp.logging.interceptor)
@@ -132,8 +112,24 @@ dependencies {
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
-    testImplementation(libs.room.testing)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
+
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.slf4j)
+
+    // Testing
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.roboelectric)
+    testImplementation(libs.google.truth)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.room.testing)
+
+    androidTestImplementation(libs.androidx.junit.ktx)
+    androidTestImplementation(libs.androidx.compose.ui.test)
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 }
