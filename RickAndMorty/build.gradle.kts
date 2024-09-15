@@ -64,6 +64,11 @@ android {
 
         targetSdk = 34
     }
+
+    lint {
+        xmlReport = true
+        xmlOutput = file("build/reports/lint-results-debug.xml")
+    }
 }
 
 dependencies {

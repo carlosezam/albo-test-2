@@ -30,6 +30,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    lint {
+        xmlReport = true
+        xmlOutput = file("build/reports/lint-results-debug.xml")
+    }
 }
 
 dependencies {

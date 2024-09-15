@@ -98,6 +98,11 @@ android {
         pickFirst "win32-x86-64/attach_hotspot_windows.dll"
         pickFirst "win32-x86/attach_hotspot_windows.dll" */
     }
+
+    lint {
+        xmlReport = true
+        xmlOutput = file("build/reports/lint-results-debug.xml")
+    }
 }
 
 dependencies {
