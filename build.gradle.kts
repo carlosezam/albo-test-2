@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.apollographql.apollo) apply false
+    alias(libs.plugins.sonar)
 }
 
 allprojects {
@@ -18,6 +19,20 @@ allprojects {
         google()
         mavenCentral()
         maven { setUrl("https://jitpack.io") }
+    }
+}
+
+// sonarqube/bin/macosx-universal-64/sonar.sh start
+subprojects {
+    apply(plugin = "org.sonarqube")
+    sonar {
+        properties {
+            property("sonar.host.url", "http://localhost:9000")
+            property("sonar.projectKey", "Punky")
+            property("sonar.token", System.getenv("SONAR_TOKEN"))
+
+            property("sonar.androidLint.reportPaths", "$buildDir/reports/lint-results-debug.xml")
+        }
     }
 }
 
