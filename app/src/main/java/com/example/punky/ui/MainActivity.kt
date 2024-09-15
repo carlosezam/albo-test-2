@@ -1,5 +1,6 @@
 package com.example.punky.ui
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.compose.rememberAsyncImagePainter
+import com.example.punky.ui.components.LocalBroadcastReceiver
 import com.example.punky.ui.components.SystemBroadcastReceiver
 import com.example.punky.ui.components.imageRequest
 import com.example.punky.ui.components.rememberGifImageLoader
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
             if (it.resultCode != RESULT_OK) {
                 val action = createAction(ACTION_LOCK_SCREEN)
-                sendBroadcast(nonExportedBroadcastIntent(action))
+                LocalBroadcastManager.getInstance(this).sendBroadcast(Intent(action))
             }
         }
 
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 mutableStateOf(false)
             }
 
-            SystemBroadcastReceiver(systemAction = createAction(ACTION_LOCK_SCREEN)) {
+            LocalBroadcastReceiver(systemAction = createAction(ACTION_LOCK_SCREEN)) {
                 blockScreen = true
             }
 
