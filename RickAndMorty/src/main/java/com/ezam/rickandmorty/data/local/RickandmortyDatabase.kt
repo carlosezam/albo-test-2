@@ -34,12 +34,6 @@ abstract class CharacterDao {
     @Query("SELECT * FROM character WHERE id BETWEEN (:page -1) * 20 + 1 AND :page * 20")
     abstract suspend fun getPage(page: Int): List<CharacterEntity>?
 
-    //@Query("SELECT id FROM character ORDER BY RANDOM() limit 1")
-    //abstract suspend fun getRandomId() : Int
-
-    //@Query("SELECT id FROM character ")
-    //abstract suspend fun geIds() : List<Int>
-
     // upsert list items
     @Insert( onConflict = OnConflictStrategy.IGNORE )
     abstract suspend fun insertOrIgnore(characters: List<CharacterEntity>) : List<Long>
