@@ -8,7 +8,7 @@ data class CharacterCardState(
     val isLoading: Boolean,
     val name: String,
     val status: VitalStatus,
-    val image: ImageBitmap,
+    val image: ImageBitmap?,
     val primaryColor: Color,
     val textColor: Color,
 )

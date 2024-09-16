@@ -1,4 +1,4 @@
-package com.example.punky.ui.components
+package com.punky.core.components
 
 import android.content.BroadcastReceiver
 import android.content.Context

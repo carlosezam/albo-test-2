@@ -1,4 +1,4 @@
-package com.example.punky.ui.components
+package com.punky.core.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext

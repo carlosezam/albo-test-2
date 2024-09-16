@@ -30,27 +30,37 @@ class CharacterCardViewModel @Inject constructor(
     private val state = MutableStateFlow<CharacterCardState?>(null)
     fun getState() = state.asStateFlow()
 
+    private var lastPrimaryColor: Color? = null
+    private var lastTextColor: Color? = null
+
     fun nexRandom() = viewModelScope.launch {
-        repository.randomCharacter()?.let { next ->
+        repository.randomCharacter().collect{ next ->
 
-            val image = byteArrayToBitmap(next.image) ?: return@let
+            if( next == null) return@collect
 
-            val palette = generatePalette(image)
+            val image = byteArrayToBitmap(next.image)
+
+            val palette = image?.let { generatePalette(it) }
+
+            palette?.dominantSwatch?.let {
+                lastPrimaryColor = Color(it.rgb)
+                lastTextColor = Color(it.bodyTextColor)
+            }
 
             val new = CharacterCardState(
                 isLoading = false,
                 name = next.name,
                 status = next.status,
-                image = image.asImageBitmap(),
-                primaryColor = palette.dominantSwatch?.let { Color(it.rgb) } ?: Color.Gray,
-                textColor = palette.dominantSwatch?.bodyTextColor?.let { Color(it) } ?: Color.White
+                image = image?.asImageBitmap(),
+                primaryColor = lastPrimaryColor ?: Color.Gray,
+                textColor = lastTextColor ?: Color.White
             )
 
             state.update { new }
         }
     }
 
-    suspend fun generatePalette(from: Bitmap): Palette {
+    private suspend fun generatePalette(from: Bitmap): Palette {
         return withContext(dispatcher.io()){
             Palette.from(from).generate()
         }

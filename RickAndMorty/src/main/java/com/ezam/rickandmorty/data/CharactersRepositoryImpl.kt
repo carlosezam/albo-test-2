@@ -12,6 +12,13 @@ import com.ezam.rickandmorty.domain.IdGenerator
 import com.ezam.rickandmorty.domain.ImageDownloader
 import com.ezam.rickandmorty.domain.VitalStatus
 import com.punky.core.utils.enumFromName
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 
@@ -56,36 +63,39 @@ class CharactersRepositoryImpl @Inject constructor(
         return LoadCharactersResult.Data(characters = newCharacters, next = page + 1)
     }
 
-    override suspend fun loadCharacter(id: Int): Character? {
+    override suspend fun loadCharacter(id: Int): Flow<Character?> = flow {
         val local = characterDao.getById(id)
         if( local != null )
-            return local.toCharacter()
+            return@flow emit(local.toCharacter())
 
-        val remote = api.getCharacter(id).getOrNull() ?: return null
+        val remote = api.getCharacter(id).getOrNull() ?: return@flow emit(null)
+
+        emit(remote.toCharacterEntity(ByteArray(0)).toCharacter())
 
         val image = imageDownloader.downloadImageAsByteArray(remote.image) ?: ByteArray(0)
 
         characterDao.upsert( remote.toCharacterEntity(image) )
 
-        return characterDao.getById(id)?.toCharacter()
+        emit( characterDao.getById(id)?.toCharacter() )
     }
 
-    override suspend fun randomCharacter(): Character? {
+    override suspend fun randomCharacter(): Flow<Character?>  {
         // Si hay un ID fallido, lo volvemos a intentar, de lo contrario generamos uno nuevo
         val idToTry = lastFailedId ?: idGenerator.nextId()
 
         // Intentamos cargar el personaje
-        val character = loadCharacter(idToTry)
+        return loadCharacter(idToTry).onEach{ character ->
 
-        // Si falla (es null), guardamos este ID para reintentarlo la próxima vez
-        if (character == null) {
-            lastFailedId = idToTry
-        } else {
-            // Si es exitoso, limpiamos el lastFailedId
-            lastFailedId = null
+            // Si falla (es null), guardamos este ID para reintentarlo la próxima vez
+            if (character == null) {
+                lastFailedId = idToTry
+            } else {
+                // Si es exitoso, limpiamos el lastFailedId
+                lastFailedId = null
+            }
+
         }
 
-        return character
     }
 }
 

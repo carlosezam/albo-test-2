@@ -9,7 +9,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,9 +16,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.compose.rememberAsyncImagePainter
-import com.example.punky.ui.components.LocalBroadcastReceiver
-import com.example.punky.ui.components.imageRequest
-import com.example.punky.ui.components.rememberGifImageLoader
+import com.punky.core.components.LocalBroadcastReceiver
+import com.punky.core.components.imageRequest
+import com.punky.core.components.rememberGifImageLoader
 import com.example.punky.ui.dialogs.FullScreenImageDialog
 import com.ezam.rickandmorty.R
 import com.ezam.rickandmorty.ui.character.CharacterCardViewModel

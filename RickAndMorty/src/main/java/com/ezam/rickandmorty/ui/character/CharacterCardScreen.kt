@@ -25,14 +25,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
 import com.ezam.rickandmorty.R
 import com.ezam.rickandmorty.domain.VitalStatus
 import com.ezam.rickandmorty.ui.character.components.decorateAvatar
 import com.ezam.rickandmorty.utils.ThrottleClick
+import com.punky.core.components.imageRequest
+import com.punky.core.components.rememberGifImageLoader
 
 @Composable
 fun CharacterCardScreen(
@@ -66,6 +70,7 @@ fun CharacterItem(
         VitalStatus.Unknown -> Color.Gray
     }
     val animatedPrimaryColor = animateColorAsState(targetValue = character.primaryColor)
+    val portalPainter = rememberGiftPainter(R.drawable.portal)
     BoxWithConstraints(
         modifier = Modifier
             .clickable(
@@ -113,16 +118,22 @@ fun CharacterItem(
         }
 
         Image(
-            bitmap = character.image,
+            painter = character.image?.let { BitmapPainter(it) } ?: portalPainter,
             contentDescription = "Imagen de ${character.name}",
             modifier = Modifier
                 .size(radiusAvatar * 2)
-                .decorateAvatar(statusColor, character.primaryColor),
-            contentScale = ContentScale.FillWidth
+                .decorateAvatar(statusColor, character.primaryColor)
+                .background(Color.Red),
+            contentScale = ContentScale.Fit
         )
     }
 
 }
+
+@Composable
+fun rememberGiftPainter(data: Any?) = rememberAsyncImagePainter(
+    model = imageRequest(data), imageLoader = rememberGifImageLoader()
+)
 
 @Preview(showBackground = true)
 @Composable
