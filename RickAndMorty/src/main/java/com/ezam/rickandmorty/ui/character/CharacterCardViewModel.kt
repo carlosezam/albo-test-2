@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
 import com.ezam.rickandmorty.data.byteArrayToBitmap
 import com.ezam.rickandmorty.domain.CharacterRepository
+import com.punky.core.utils.DispatcherProvider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CharacterCardViewModel @Inject constructor(
     private val repository: CharacterRepository,
+    private val dispatcher: DispatcherProvider,
 ): ViewModel() {
 
     private val state = MutableStateFlow<CharacterCardState?>(null)
@@ -49,7 +51,7 @@ class CharacterCardViewModel @Inject constructor(
     }
 
     suspend fun generatePalette(from: Bitmap): Palette {
-        return withContext(Dispatchers.IO){
+        return withContext(dispatcher.io()){
             Palette.from(from).generate()
         }
     }

@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.compose.rememberAsyncImagePainter
 import com.example.punky.ui.components.LocalBroadcastReceiver
@@ -65,7 +66,7 @@ class MainActivity : AppCompatActivity() {
             if (blockScreen) {
                 LockScreen(closeApp = ::closeApp, checkForUpdates = ::checkForUpdates)
             } else {
-                val state by vmodel.getState().collectAsState()
+                val state by vmodel.getState().collectAsStateWithLifecycle()
 
                 CharacterCardScreen(state = state) {
                     vmodel.nexRandom()

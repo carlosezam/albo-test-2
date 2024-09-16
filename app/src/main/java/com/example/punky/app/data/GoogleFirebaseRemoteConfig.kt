@@ -3,6 +3,7 @@ package com.example.punky.app.data
 import android.util.Log
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.punky.core.data.RemoteConfig
+import com.punky.core.utils.DispatcherProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -11,6 +12,7 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 
 class GoogleFirebaseRemoteConfig @Inject constructor(
+    private val dispatcher: DispatcherProvider,
     private val config: FirebaseRemoteConfig,
     private val timeoutMillis: Long = 7 * 1000L
 ) : RemoteConfig {
@@ -24,7 +26,7 @@ class GoogleFirebaseRemoteConfig @Inject constructor(
     override fun getDouble(key: String): Double = config.getDouble(key)
 
     override suspend fun fetch(): RemoteConfig = withTimeoutOrNull(timeoutMillis) {
-        withContext(Dispatchers.IO){
+        withContext(dispatcher.io()){
             suspendCancellableCoroutine { continuation ->
 
                 Log.d("AppInit", "RemoteConfig ensureInitialized()")

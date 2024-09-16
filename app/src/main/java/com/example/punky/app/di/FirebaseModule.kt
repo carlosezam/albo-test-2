@@ -3,6 +3,7 @@ package com.example.punky.app.di
 import com.example.punky.app.data.GoogleFirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.punky.core.data.RemoteConfig
+import com.punky.core.utils.DispatcherProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,8 +15,8 @@ interface MobileServiceModule {
 
     companion object {
         @Provides
-        fun providesRemoteConfig() : RemoteConfig {
-            return GoogleFirebaseRemoteConfig(FirebaseRemoteConfig.getInstance())
+        fun providesRemoteConfig(dispatcherProvider: DispatcherProvider) : RemoteConfig {
+            return GoogleFirebaseRemoteConfig(dispatcherProvider, FirebaseRemoteConfig.getInstance())
         }
 
     }
