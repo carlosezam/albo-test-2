@@ -21,8 +21,8 @@ import com.example.punky.ui.components.imageRequest
 import com.example.punky.ui.components.rememberGifImageLoader
 import com.example.punky.ui.dialogs.FullScreenImageDialog
 import com.ezam.rickandmorty.R
-import com.ezam.rickandmorty.ui.character.CharacterItemViewModel
-import com.ezam.rickandmorty.ui.character.CharacterScreen
+import com.ezam.rickandmorty.ui.character.CharacterCardViewModel
+import com.ezam.rickandmorty.ui.character.CharacterCardScreen
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
 
-    private val vmodel: CharacterItemViewModel by viewModels()
+    private val vmodel: CharacterCardViewModel by viewModels()
 
     private val updateResult =
         registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 val state by vmodel.getState().collectAsState()
 
-                CharacterScreen(state = state) {
+                CharacterCardScreen(state = state) {
                     vmodel.nexRandom()
                 }
 

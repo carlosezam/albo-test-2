@@ -1,4 +1,4 @@
-package com.ezam.rickandmorty.ui.character
+package com.ezam.rickandmorty.ui.character.components
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache

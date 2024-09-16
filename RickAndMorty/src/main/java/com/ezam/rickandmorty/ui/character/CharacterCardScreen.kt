@@ -31,31 +31,23 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ezam.rickandmorty.R
 import com.ezam.rickandmorty.domain.VitalStatus
-
-data class CharacterItemState(
-    val isLoading: Boolean,
-    val name: String,
-    val status: VitalStatus,
-    val image: ImageBitmap,
-    val primaryColor: Color,
-    val textColor: Color,
-)
-
-class DebounceClick( val onClick: () -> Unit ) : () -> Unit {
-    override fun invoke(): Unit = onClick()
-
-}
+import com.ezam.rickandmorty.ui.character.components.decorateAvatar
+import com.ezam.rickandmorty.utils.ThrottleClick
 
 @Composable
-fun CharacterScreen(state: CharacterItemState?, modifier: Modifier = Modifier,  onClick: () -> Unit = {}) {
+fun CharacterCardScreen(
+    state: CharacterCardState?,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit = {}
+) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(Color.Black),
         contentAlignment = Alignment.Center
     ) {
-        if(state != null)
-            CharacterItem(character = state, onClick = DebounceClick(onClick))
+        if (state != null)
+            CharacterItem(character = state, onClick = ThrottleClick(onClick=onClick))
         else
             CircularProgressIndicator(color = Color.White)
     }
@@ -63,7 +55,7 @@ fun CharacterScreen(state: CharacterItemState?, modifier: Modifier = Modifier,  
 
 @Composable
 fun CharacterItem(
-    character: CharacterItemState,
+    character: CharacterCardState,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -135,7 +127,7 @@ fun CharacterItem(
 @Preview(showBackground = true)
 @Composable
 fun CharacterItemPreview() {
-    val state = CharacterItemState(
+    val state = CharacterCardState(
         isLoading = false,
         name = "Rick",
         status = VitalStatus.Dead,
@@ -143,5 +135,5 @@ fun CharacterItemPreview() {
         primaryColor = Color.Gray,
         textColor = Color.White
     )
-    CharacterScreen(state = state)
+    CharacterCardScreen(state = state)
 }

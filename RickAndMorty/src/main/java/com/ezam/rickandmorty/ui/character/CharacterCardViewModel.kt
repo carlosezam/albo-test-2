@@ -2,14 +2,11 @@ package com.ezam.rickandmorty.ui.character
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.palette.graphics.Palette
-import coil.imageLoader
-import coil.request.ImageRequest
 import com.ezam.rickandmorty.data.byteArrayToBitmap
 import com.ezam.rickandmorty.domain.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,12 +21,11 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class CharacterItemViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+class CharacterCardViewModel @Inject constructor(
     private val repository: CharacterRepository,
 ): ViewModel() {
 
-    private val state = MutableStateFlow<CharacterItemState?>(null)
+    private val state = MutableStateFlow<CharacterCardState?>(null)
     fun getState() = state.asStateFlow()
 
     fun nexRandom() = viewModelScope.launch {
@@ -39,7 +35,7 @@ class CharacterItemViewModel @Inject constructor(
 
             val palette = generatePalette(image)
 
-            val new = CharacterItemState(
+            val new = CharacterCardState(
                 isLoading = false,
                 name = next.name,
                 status = next.status,
@@ -50,19 +46,6 @@ class CharacterItemViewModel @Inject constructor(
 
             state.update { new }
         }
-    }
-
-
-
-    suspend fun downloadBitmap(imageUrl: String) : Bitmap? {
-        val request = ImageRequest.Builder(context)
-            .data(imageUrl)
-            .allowHardware(false)
-            .build()
-
-        val result = context.imageLoader.execute(request)
-
-        return (result.drawable as? BitmapDrawable)?.bitmap
     }
 
     suspend fun generatePalette(from: Bitmap): Palette {

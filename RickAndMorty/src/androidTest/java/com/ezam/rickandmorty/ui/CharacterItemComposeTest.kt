@@ -9,7 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import com.ezam.rickandmorty.R
 import com.ezam.rickandmorty.domain.VitalStatus
 import com.ezam.rickandmorty.ui.character.CharacterItem
-import com.ezam.rickandmorty.ui.character.CharacterItemState
+import com.ezam.rickandmorty.ui.character.CharacterCardState
 import org.junit.Rule
 import org.junit.Test
 
@@ -23,7 +23,7 @@ class CharacterItemComposeTest {
     fun characterItem_debeMostrar_todosLosDatosMinimos(){
 
         composeRule.setContent {
-            val character = CharacterItemState(
+            val character = CharacterCardState(
                 isLoading = false,
                 name = "Lorem",
                 status = VitalStatus.Alive,
